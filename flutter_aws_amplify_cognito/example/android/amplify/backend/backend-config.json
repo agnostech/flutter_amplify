@@ -1,0 +1,10 @@
+{
+	"auth": {
+		"android0611747e": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}

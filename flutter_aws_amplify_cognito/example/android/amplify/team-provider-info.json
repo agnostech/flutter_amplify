@@ -1,0 +1,22 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-android-test-162655-authRole",
+            "UnauthRoleArn": "arn:aws:iam::014778990808:role/amplify-android-test-162655-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::014778990808:role/amplify-android-test-162655-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-android-test-162655-deployment",
+            "UnauthRoleName": "amplify-android-test-162655-unauthRole",
+            "StackName": "amplify-android-test-162655",
+            "StackId": "arn:aws:cloudformation:us-west-2:014778990808:stack/amplify-android-test-162655/34e1a6e0-5f99-11ea-901c-0a7bad71d2ca",
+            "AmplifyAppId": "d36ujgcyyfe9cw"
+        },
+        "categories": {
+            "auth": {
+                "android0611747e": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"668805319321-0m66682nf4chant8oaee2iqfkilkhgfd.apps.googleusercontent.com\",\"client_secret\":\"ARS6UWAB6NlilFGrrCc8Ga14\"}]"
+                }
+            }
+        }
+    }
+}
