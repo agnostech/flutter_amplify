@@ -3,6 +3,7 @@ package `in`.agnostech.flutter_aws_amplify_cognito
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.mobile.client.*
 import com.amazonaws.mobile.client.results.*
 import io.flutter.plugin.common.MethodChannel
@@ -11,7 +12,21 @@ import java.lang.Exception
 class FlutterAwsAmplifyCognito {
     companion object {
         fun isSignedIn() = AWSMobileClient.getInstance().isSignedIn
-        fun currentUserState() = AWSMobileClient.getInstance().currentUserState().userState.name
+        fun currentUserState(result: MethodChannel.Result) =
+                AWSMobileClient.getInstance().currentUserState(object: Callback<UserStateDetails> {
+                    override fun onResult(details: UserStateDetails) {
+                        Handler(Looper.getMainLooper()).post {
+                            result.success(details.userState.name)
+                        }
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Handler(Looper.getMainLooper()).post {
+
+                        }
+                    }
+
+                })
         fun initialize(context: Context, result: MethodChannel.Result) =
                 AWSMobileClient.getInstance().initialize(context, object : Callback<UserStateDetails> {
                     override fun onResult(userStateDetails: UserStateDetails) {
@@ -62,8 +77,22 @@ class FlutterAwsAmplifyCognito {
 
                 })
 
-        fun getUsername() = AWSMobileClient.getInstance().username
-        fun getIdentityId() = AWSMobileClient.getInstance().identityId
+        fun getUsername(result: MethodChannel.Result) {
+            try {
+                val username = AWSMobileClient.getInstance().username;
+                result.success(username)
+            } catch (e: Error) {
+                result.error("Error", "Error getting username", e.localizedMessage)
+            }
+        }
+        fun getIdentityId(result: MethodChannel.Result) {
+            try {
+                val identityId = AWSMobileClient.getInstance().identityId
+                result.success(identityId)
+            } catch (e: Error) {
+                result.error("Error", "Error getting Identity ID", e.localizedMessage)
+            }
+        }
         fun getTokens(result: MethodChannel.Result) = AWSMobileClient.getInstance().getTokens(object : Callback<Tokens> {
             override fun onResult(tokens: Tokens) {
                 Handler(Looper.getMainLooper()).post {
@@ -84,18 +113,51 @@ class FlutterAwsAmplifyCognito {
 
         })
 
-        fun getIdToken() = AWSMobileClient.getInstance().tokens.idToken.tokenString
+        fun getIdToken(result: MethodChannel.Result) {
+            try {
+                val idToken = AWSMobileClient.getInstance().tokens.idToken.tokenString
+                result.success(idToken);
+            } catch (e: Error) {
+                result.error("Error", "Error getting ID Token", e.localizedMessage)
+            }
+        }
 
-        fun getAccessToken() = AWSMobileClient.getInstance().tokens.accessToken.tokenString
+        fun getAccessToken(result: MethodChannel.Result) {
+            try {
+                val accessToken = AWSMobileClient.getInstance().tokens.accessToken.tokenString
+                result.success(accessToken);
+            } catch (e: Error) {
+                result.error("Error", "Error getting Access Token", e.localizedMessage)
+            }
+        }
 
-        fun getRefreshToken() = AWSMobileClient.getInstance().tokens.refreshToken.tokenString
+        fun getRefreshToken(result: MethodChannel.Result){
+            try {
+                val refreshToken = AWSMobileClient.getInstance().tokens.refreshToken.tokenString
+                result.success(refreshToken)
+            } catch (e: Error) {
+                result.error("Error", "Error getting Refresh Token", e.localizedMessage)
+            }
+        }
 
         fun getCredentials(result: MethodChannel.Result) {
-            val credentials = AWSMobileClient.getInstance().awsCredentials
-            result.success(hashMapOf(
-                    "secretKey" to credentials.awsSecretKey,
-                    "accessKeyId" to credentials.awsAccessKeyId
-            ))
+            AWSMobileClient.getInstance().getAWSCredentials(object: Callback<AWSCredentials> {
+                override fun onResult(credentials: AWSCredentials) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(hashMapOf(
+                                "secretKey" to credentials.awsSecretKey,
+                                "accessKeyId" to credentials.awsAccessKeyId
+                        ))
+                    }
+                }
+
+                override fun onError(e: Exception) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("Error", "Error getting credentials", e.localizedMessage)
+                    }
+                }
+
+            })
         }
 
         fun signUp(result: MethodChannel.Result, username: String, password: String, userAttributes: Map<String, String>) =
@@ -118,9 +180,9 @@ class FlutterAwsAmplifyCognito {
                                     Handler(Looper.getMainLooper()).post {
                                         result.success(hashMapOf(
                                                 "confirmationState" to false,
-                                                "destination" to userCodeDeliveryDetails.destination,
-                                                "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                                "attributeName" to userCodeDeliveryDetails.attributeName
+                                                "destination" to userCodeDeliveryDetails?.destination,
+                                                "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                                "attributeName" to userCodeDeliveryDetails?.attributeName
 
                                         ))
                                     }
@@ -155,9 +217,9 @@ class FlutterAwsAmplifyCognito {
                                     Handler(Looper.getMainLooper()).post {
                                         result.success(hashMapOf(
                                                 "confirmationState" to false,
-                                                "destination" to userCodeDeliveryDetails.destination,
-                                                "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                                "attributeName" to userCodeDeliveryDetails.attributeName
+                                                "destination" to userCodeDeliveryDetails?.destination,
+                                                "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                                "attributeName" to userCodeDeliveryDetails?.attributeName
 
                                         ))
                                     }
@@ -182,9 +244,9 @@ class FlutterAwsAmplifyCognito {
                                 Handler(Looper.getMainLooper()).post {
                                     result.success(hashMapOf(
                                             "confirmationState" to signUpResult.confirmationState,
-                                            "destination" to userCodeDeliveryDetails.destination,
-                                            "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                            "attributeName" to userCodeDeliveryDetails.attributeName
+                                            "destination" to userCodeDeliveryDetails?.destination,
+                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                            "attributeName" to userCodeDeliveryDetails?.attributeName
                                     ))
                                 }
                             }
@@ -210,9 +272,9 @@ class FlutterAwsAmplifyCognito {
                                     result.success(hashMapOf(
                                             "signInState" to signInResult.signInState.name,
                                             "parameters" to signInResult.parameters,
-                                            "destination" to userCodeDeliveryDetails.destination,
-                                            "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                            "attributeName" to userCodeDeliveryDetails.attributeName
+                                            "destination" to userCodeDeliveryDetails?.destination,
+                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                            "attributeName" to userCodeDeliveryDetails?.attributeName
                                     ))
                                 }
                             }
@@ -236,9 +298,9 @@ class FlutterAwsAmplifyCognito {
                                     result.success(hashMapOf(
                                             "signInState" to signInResult.signInState.name,
                                             "parameters" to signInResult.parameters,
-                                            "destination" to userCodeDeliveryDetails.destination,
-                                            "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                            "attributeName" to userCodeDeliveryDetails.attributeName
+                                            "destination" to userCodeDeliveryDetails?.destination,
+                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                            "attributeName" to userCodeDeliveryDetails?.attributeName
 
                                     ))
                                 }
@@ -261,9 +323,9 @@ class FlutterAwsAmplifyCognito {
                                 Handler(Looper.getMainLooper()).post {
                                     val userCodeDeliveryDetails = forgotPasswordResult.parameters;
                                     result.success(hashMapOf(
-                                            "destination" to userCodeDeliveryDetails.destination,
-                                            "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                            "attributeName" to userCodeDeliveryDetails.attributeName,
+                                            "destination" to userCodeDeliveryDetails?.destination,
+                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                            "attributeName" to userCodeDeliveryDetails?.attributeName,
                                             "state" to forgotPasswordResult.state.name
                                     ))
                                 }
@@ -285,11 +347,11 @@ class FlutterAwsAmplifyCognito {
                         object : Callback<ForgotPasswordResult> {
                             override fun onResult(forgotPasswordResult: ForgotPasswordResult) {
                                 Handler(Looper.getMainLooper()).post {
-                                    val userCodeDeliveryDetails = forgotPasswordResult.parameters;
+                                    val userCodeDeliveryDetails = forgotPasswordResult.parameters
                                     result.success(hashMapOf(
-                                            "destination" to userCodeDeliveryDetails.destination,
-                                            "deliveryMedium" to userCodeDeliveryDetails.deliveryMedium,
-                                            "attributeName" to userCodeDeliveryDetails.attributeName,
+                                            "destination" to userCodeDeliveryDetails?.destination,
+                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                            "attributeName" to userCodeDeliveryDetails?.attributeName,
                                             "state" to forgotPasswordResult.state.name
                                     ))
                                 }
@@ -397,7 +459,7 @@ class FlutterAwsAmplifyCognito {
                 options = FederatedSignInOptions.builder().cognitoIdentityId(cognitoIdentityId).build()
             }
             options?.let {
-                AWSMobileClient.getInstance().federatedSignIn(identityProvider, token, options, object: Callback<UserStateDetails> {
+                AWSMobileClient.getInstance().federatedSignIn(identityProvider, token, options, object : Callback<UserStateDetails> {
                     override fun onResult(userStateDetails: UserStateDetails) {
                         Handler(Looper.getMainLooper()).post {
                             result.success(hashMapOf(

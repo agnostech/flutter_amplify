@@ -39,7 +39,7 @@ class FlutterAwsAmplifyCognito {
   static Future<SignUpResult> signUp(String username, String password,
       Map<String, String> userAttributes) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['username'] = username;
       arguments['password'] = password;
       arguments['userAttributes'] = userAttributes;
@@ -58,7 +58,7 @@ class FlutterAwsAmplifyCognito {
   static Future<SignUpResult> confirmSignUp(
       String username, String code) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['username'] = username;
       arguments['code'] = code;
 
@@ -75,7 +75,7 @@ class FlutterAwsAmplifyCognito {
 
   static Future<SignUpResult> resendSignUp(String username) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['username'] = username;
 
       final signUpResult =
@@ -91,7 +91,7 @@ class FlutterAwsAmplifyCognito {
 
   static Future<SignInResult> signIn(String username, String password) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['username'] = username;
       arguments['password'] = password;
 
@@ -111,7 +111,7 @@ class FlutterAwsAmplifyCognito {
   static Future<SignInResult> confirmSignIn(
       String confirmSignInChallenge) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['confirmSignInChallenge'] = confirmSignInChallenge;
 
       final signInResult =
@@ -129,7 +129,7 @@ class FlutterAwsAmplifyCognito {
 
   static Future<ForgotPasswordResult> forgotPassword(String username) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['username'] = username;
 
       final forgotPasswordResult =
@@ -149,7 +149,7 @@ class FlutterAwsAmplifyCognito {
   static Future<ForgotPasswordResult> confirmForgotPassword(
       String username, String newPassword, String confirmationCode) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['newPassword'] = newPassword;
       arguments['confirmationCode'] = confirmationCode;
 
@@ -171,7 +171,7 @@ class FlutterAwsAmplifyCognito {
       String identityProvider, String token,
       [String customRoleARN, String cognitoIdentityId]) async {
     try {
-      Map<String, dynamic> arguments = Map<String, String>();
+      Map<String, dynamic> arguments = Map<String, dynamic>();
       arguments['identityProvider'] = identityProvider;
       arguments['token'] = token;
       arguments['customRoleARN'] = customRoleARN;
