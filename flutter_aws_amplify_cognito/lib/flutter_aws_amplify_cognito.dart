@@ -119,7 +119,7 @@ class FlutterAwsAmplifyCognito {
 
       return SignInResult(
           parseSignInState(signInResult['signInState']),
-          signInResult['parameters'],
+          Map<String, String>.from(signInResult['parameters']),
           UserCodeDeliveryDetails(signInResult['destination'],
               signInResult['deliveryMedium'], signInResult['attributeName']));
     } on PlatformException catch (e) {
@@ -181,7 +181,7 @@ class FlutterAwsAmplifyCognito {
           await _methodChannel.invokeMethod('federatedSignIn', arguments);
 
       return FederatedSignInResult(
-          parseUserStatus(result['userState']), result['userDetails']);
+          parseUserStatus(result['userState']), Map<String, String>.from(['userDetails']));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
