@@ -57,6 +57,13 @@ class CognitoMethodChannelHandler(private val context: Context) : MethodChannel.
                     call.argument<String>("confirmationCode")!!
 
             )
+            "federatedSignIn" -> FlutterAwsAmplifyCognito.federatedSignIn(
+                    result,
+                    call.argument<String>("identityProvider")!!,
+                    call.argument<String>("token")!!,
+                    call.argument<String>("customRoleARN"),
+                    call.argument<String>("cognitoIdentityId")
+            )
             else -> result.notImplemented()
         }
     }

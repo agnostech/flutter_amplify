@@ -3,10 +3,7 @@ package `in`.agnostech.flutter_aws_amplify_cognito
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobile.client.Callback
-import com.amazonaws.mobile.client.SignOutOptions
-import com.amazonaws.mobile.client.UserStateDetails
+import com.amazonaws.mobile.client.*
 import com.amazonaws.mobile.client.results.*
 import io.flutter.plugin.common.MethodChannel
 import java.lang.Exception
@@ -391,6 +388,52 @@ class FlutterAwsAmplifyCognito {
 
                 })
 
+        fun federatedSignIn(result: MethodChannel.Result, identityProvider: String, token: String, customRoleARN: String?, cognitoIdentityId: String?) {
+            var options: FederatedSignInOptions? = null
+            customRoleARN?.let {
+                options = FederatedSignInOptions.builder().customRoleARN(customRoleARN).build()
+            }
+            cognitoIdentityId?.let {
+                options = FederatedSignInOptions.builder().cognitoIdentityId(cognitoIdentityId).build()
+            }
+            options?.let {
+                AWSMobileClient.getInstance().federatedSignIn(identityProvider, token, options, object: Callback<UserStateDetails> {
+                    override fun onResult(userStateDetails: UserStateDetails) {
+                        Handler(Looper.getMainLooper()).post {
+                            result.success(hashMapOf(
+                                    "userState" to userStateDetails.userState.name,
+                                    "userDetails" to userStateDetails.details
+                            ))
+                        }
+                    }
 
+                    override fun onError(e: Exception) {
+                        Handler(Looper.getMainLooper()).post {
+                            result.error("Error", "Error signing in", e.localizedMessage)
+                        }
+                    }
+
+                })
+            }
+
+            AWSMobileClient.getInstance().federatedSignIn(identityProvider, token, object : Callback<UserStateDetails> {
+                override fun onResult(userStateDetails: UserStateDetails) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(hashMapOf(
+                                "userState" to userStateDetails.userState.name,
+                                "userDetails" to userStateDetails.details
+                        ))
+                    }
+                }
+
+                override fun onError(e: Exception) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("Error", "Error signing in", e.localizedMessage)
+                    }
+                }
+
+            })
+
+        }
     }
 }

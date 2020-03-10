@@ -1,5 +1,5 @@
 
-enum FlutterCognitoUserStatus {
+enum UserStatus {
   GUEST,
   SIGNED_IN,
   SIGNED_OUT,

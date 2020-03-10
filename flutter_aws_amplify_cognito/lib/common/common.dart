@@ -1,21 +1,21 @@
-import 'package:flutter_aws_amplify_cognito/common/flutter_cognito_user_status.dart';
+import 'package:flutter_aws_amplify_cognito/common/user_status.dart';
 import 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_state.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/signin_state.dart';
 
-FlutterCognitoUserStatus parseUserStatus(String userStatus) {
+UserStatus parseUserStatus(String userStatus) {
   switch (userStatus) {
     case "GUEST":
-      return FlutterCognitoUserStatus.GUEST;
+      return UserStatus.GUEST;
     case "SIGNED_IN":
-      return FlutterCognitoUserStatus.SIGNED_IN;
+      return UserStatus.SIGNED_IN;
     case "SIGNED_OUT":
-      return FlutterCognitoUserStatus.SIGNED_OUT;
+      return UserStatus.SIGNED_OUT;
     case "SIGNED_OUT_FEDERATED_TOKENS_INVALID":
-      return FlutterCognitoUserStatus.SIGNED_OUT_FEDERATED_TOKENS_INVALID;
+      return UserStatus.SIGNED_OUT_FEDERATED_TOKENS_INVALID;
     case "SIGNED_OUT_USER_POOLS_TOKENS_INVALID":
-      return FlutterCognitoUserStatus.SIGNED_OUT_USER_POOLS_TOKENS_INVALID;
+      return UserStatus.SIGNED_OUT_USER_POOLS_TOKENS_INVALID;
     default:
-      return FlutterCognitoUserStatus.ERROR;
+      return UserStatus.ERROR;
   }
 }
 

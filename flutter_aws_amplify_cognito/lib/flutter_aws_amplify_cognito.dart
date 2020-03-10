@@ -2,15 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_aws_amplify_cognito/common/common.dart';
-import 'package:flutter_aws_amplify_cognito/common/flutter_cognito_user_status.dart';
+import 'package:flutter_aws_amplify_cognito/common/user_status.dart';
 import 'package:flutter_aws_amplify_cognito/credentials/aws_credentials.dart';
 import 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_result.dart';
+import 'package:flutter_aws_amplify_cognito/sign_in/federated_signin_resullt.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/signin_result.dart';
 import 'package:flutter_aws_amplify_cognito/sign_up/signup_result.dart';
 import 'package:flutter_aws_amplify_cognito/common/user_code_delivery_details.dart';
 import 'package:flutter_aws_amplify_cognito/tokens/tokens.dart';
 
-export 'package:flutter_aws_amplify_cognito/common/flutter_cognito_user_status.dart';
+export 'package:flutter_aws_amplify_cognito/common/user_status.dart';
 export 'package:flutter_aws_amplify_cognito/common/user_code_delivery_details.dart';
 
 export 'package:flutter_aws_amplify_cognito/sign_up/signup_result.dart';
@@ -21,6 +22,8 @@ export 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_stat
 export 'package:flutter_aws_amplify_cognito/tokens/tokens.dart';
 export 'package:flutter_aws_amplify_cognito/credentials/aws_credentials.dart';
 
+export 'package:flutter_aws_amplify_cognito/sign_in/federated_signin_resullt.dart';
+export 'package:flutter_aws_amplify_cognito/sign_in/identity_provider.dart';
 
 class FlutterAwsAmplifyCognito {
   static const MethodChannel _methodChannel =
@@ -160,7 +163,27 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Future<FlutterCognitoUserStatus> initialize() async {
+  static Future<FederatedSignInResult> federatedSignIn(
+      String identityProvider, String token,
+      [String customRoleARN, String cognitoIdentityId]) async {
+    try {
+      Map<String, dynamic> arguments = Map<String, String>();
+      arguments['identityProvider'] = identityProvider;
+      arguments['token'] = token;
+      arguments['customRoleARN'] = customRoleARN;
+      arguments['cognitoIdentityId'] = cognitoIdentityId;
+
+      final result =
+          await _methodChannel.invokeMethod('federatedSignIn', arguments);
+
+      return FederatedSignInResult(
+          parseUserStatus(result['userState']), result['userDetails']);
+    } on PlatformException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  static Future<UserStatus> initialize() async {
     try {
       return parseUserStatus(await _methodChannel.invokeMethod("initialize"));
     } on PlatformException catch (e) {
@@ -176,7 +199,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Future<FlutterCognitoUserStatus> currentUserStatus() async {
+  static Future<UserStatus> currentUserStatus() async {
     try {
       return parseUserStatus(
           await _methodChannel.invokeMethod("currentUserState"));
@@ -263,8 +286,7 @@ class FlutterAwsAmplifyCognito {
     try {
       final credentials = await _methodChannel.invokeMethod("getCredentials");
       return AWSCredentials(
-        credentials['accessKeyId'], credentials['secretKey']
-      );
+          credentials['accessKeyId'], credentials['secretKey']);
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -302,7 +324,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Stream<FlutterCognitoUserStatus> get addUserStateListener {
+  static Stream<UserStatus> get addUserStateListener {
     return _eventChannel
         .receiveBroadcastStream()
         .map((event) => event.toString())

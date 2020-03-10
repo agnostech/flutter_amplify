@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
     FlutterAwsAmplifyCognito.initialize()
-        .then((FlutterCognitoUserStatus status) {
+        .then((UserStatus status) {
           setState(() {
             _platformVersion = status.toString();
           });
@@ -34,6 +34,35 @@ class _MyAppState extends State<MyApp> {
     .catchError((error) => print(error));
 
     FlutterAwsAmplifyCognito.isSignedIn().then((value) => print(value)).catchError((error) => print(error));
+
+    FlutterAwsAmplifyCognito.federatedSignIn(IdentityProvider.GOOGLE, "token")
+    .then((FederatedSignInResult result) {
+      switch(result.userStatus) {
+        case UserStatus.GUEST:
+          // TODO: Handle this case.
+          break;
+        case UserStatus.SIGNED_IN:
+          // TODO: Handle this case.
+          break;
+        case UserStatus.SIGNED_OUT:
+          // TODO: Handle this case.
+          break;
+        case UserStatus.SIGNED_OUT_FEDERATED_TOKENS_INVALID:
+          // TODO: Handle this case.
+          break;
+        case UserStatus.SIGNED_OUT_USER_POOLS_TOKENS_INVALID:
+          // TODO: Handle this case.
+          break;
+        case UserStatus.UNKNOWN:
+          // TODO: Handle this case.
+          break;
+        case UserStatus.ERROR:
+          // TODO: Handle this case.
+          break;
+      }
+    }).catchError((error) {
+      print(error);
+    });
   }
 
   @override
