@@ -1,14 +1,10 @@
-# flutter_aws_amplify_cognito
+![logo](https://user-images.githubusercontent.com/5111523/76316159-1ca5d000-6300-11ea-9810-cb36f1220efa.png)
 
-A new Flutter plugin.
 
-## Getting Started
+# flutterAmplify
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+### flutter_aws_amplify_cognito
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Flutter plugin for AWS Amplify Cognito based Authentication.
+
+Visit [here](https://agnostech.github.io/flutteramplify/#/authentication) for detailed documentation

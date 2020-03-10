@@ -28,7 +28,6 @@ export 'package:flutter_aws_amplify_cognito/sign_in/identity_provider.dart';
 
 export 'package:flutter_aws_amplify_cognito/device/device.dart';
 
-
 class FlutterAwsAmplifyCognito {
   static const MethodChannel _methodChannel =
       const MethodChannel('flutter_aws_amplify_cognito/cognito');
@@ -180,8 +179,8 @@ class FlutterAwsAmplifyCognito {
       final result =
           await _methodChannel.invokeMethod('federatedSignIn', arguments);
 
-      return FederatedSignInResult(
-          parseUserStatus(result['userState']), Map<String, String>.from(result['userDetails']));
+      return FederatedSignInResult(parseUserStatus(result['userState']),
+          Map<String, String>.from(result['userDetails']));
     } on PlatformException catch (e) {
       return Future.error(e);
     }

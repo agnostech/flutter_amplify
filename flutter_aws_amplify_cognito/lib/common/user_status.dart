@@ -1,4 +1,3 @@
-
 enum UserStatus {
   GUEST,
   SIGNED_IN,
