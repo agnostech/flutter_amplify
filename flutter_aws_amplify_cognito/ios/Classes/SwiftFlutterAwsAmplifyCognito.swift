@@ -118,9 +118,9 @@ class SwiftFlutterAwsAmplifyCognito {
             }
             DispatchQueue.main.async {
                 result(
-                    ["accessToken": tokens?.accessToken,
-                     "idToken": tokens?.idToken,
-                     "refreshToken": tokens?.refreshToken
+                    ["accessToken": tokens?.accessToken?.tokenString,
+                     "idToken": tokens?.idToken?.tokenString,
+                     "refreshToken": tokens?.refreshToken?.tokenString
                 ])
             }
         }
@@ -134,7 +134,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 }
             }
             DispatchQueue.main.async {
-                result(tokens?.idToken)
+                result(tokens?.idToken?.tokenString)
             }
         }
     }
@@ -147,7 +147,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 }
             }
             DispatchQueue.main.async {
-                result(tokens?.accessToken)
+                result(tokens?.accessToken?.tokenString)
             }
         }
     }
@@ -160,7 +160,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 }
             }
             DispatchQueue.main.async {
-                result(tokens?.refreshToken)
+                result(tokens?.refreshToken?.tokenString)
             }
         }
     }

@@ -100,7 +100,7 @@ class FlutterAwsAmplifyCognito {
 
       return SignInResult(
           parseSignInState(signInResult['signInState']),
-          signInResult['parameters'],
+          Map<String, String>.from(signInResult['parameters']),
           UserCodeDeliveryDetails(signInResult['destination'],
               signInResult['deliveryMedium'], signInResult['attributeName']));
     } on PlatformException catch (e) {
