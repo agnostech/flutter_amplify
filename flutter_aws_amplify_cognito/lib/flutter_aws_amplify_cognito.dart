@@ -181,7 +181,7 @@ class FlutterAwsAmplifyCognito {
           await _methodChannel.invokeMethod('federatedSignIn', arguments);
 
       return FederatedSignInResult(
-          parseUserStatus(result['userState']), Map<String, String>.from(['userDetails']));
+          parseUserStatus(result['userState']), Map<String, String>.from(result['userDetails']));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
