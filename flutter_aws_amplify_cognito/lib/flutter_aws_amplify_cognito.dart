@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_aws_amplify_cognito/common/common.dart';
 import 'package:flutter_aws_amplify_cognito/common/user_status.dart';
 import 'package:flutter_aws_amplify_cognito/credentials/aws_credentials.dart';
+import 'package:flutter_aws_amplify_cognito/device/device.dart';
 import 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_result.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/federated_signin_resullt.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/signin_result.dart';
@@ -199,7 +200,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Future<UserStatus> currentUserStatus() async {
+  static Future<UserStatus> currentUserState() async {
     try {
       return parseUserStatus(
           await _methodChannel.invokeMethod("currentUserState"));
@@ -226,7 +227,8 @@ class FlutterAwsAmplifyCognito {
 
   static Future<Map<String, String>> getUserAttributes() async {
     try {
-      return await _methodChannel.invokeMethod("getUserAttributes");
+      final attributes = await _methodChannel.invokeMethod("getUserAttributes");
+      return Map<String, String>.from(attributes);
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -316,9 +318,16 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Future<Map<String, String>> getDeviceDetails() async {
+  static Future<Device> getDeviceDetails() async {
     try {
-      return await _methodChannel.invokeMethod("getDeviceDetails");
+      var deviceDetails = await _methodChannel.invokeMethod("getDeviceDetails");
+
+      return Device(
+          DateTime.parse(deviceDetails['createDate']),
+          deviceDetails['deviceKey'],
+          DateTime.parse(deviceDetails['lastAuthenticatedDate']),
+          DateTime.parse(deviceDetails['lastModifiedDate']),
+          Map<String, String>.from(deviceDetails['attributes']));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
