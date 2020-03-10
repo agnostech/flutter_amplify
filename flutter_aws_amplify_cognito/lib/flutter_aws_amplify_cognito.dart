@@ -26,6 +26,9 @@ export 'package:flutter_aws_amplify_cognito/credentials/aws_credentials.dart';
 export 'package:flutter_aws_amplify_cognito/sign_in/federated_signin_resullt.dart';
 export 'package:flutter_aws_amplify_cognito/sign_in/identity_provider.dart';
 
+export 'package:flutter_aws_amplify_cognito/device/device.dart';
+
+
 class FlutterAwsAmplifyCognito {
   static const MethodChannel _methodChannel =
       const MethodChannel('flutter_aws_amplify_cognito/cognito');
