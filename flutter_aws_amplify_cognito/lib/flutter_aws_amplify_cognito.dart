@@ -3,13 +3,24 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_aws_amplify_cognito/common/common.dart';
 import 'package:flutter_aws_amplify_cognito/common/flutter_cognito_user_status.dart';
+import 'package:flutter_aws_amplify_cognito/credentials/aws_credentials.dart';
 import 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_result.dart';
-import 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_state.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/signin_result.dart';
 import 'package:flutter_aws_amplify_cognito/sign_up/signup_result.dart';
 import 'package:flutter_aws_amplify_cognito/common/user_code_delivery_details.dart';
+import 'package:flutter_aws_amplify_cognito/tokens/tokens.dart';
 
 export 'package:flutter_aws_amplify_cognito/common/flutter_cognito_user_status.dart';
+export 'package:flutter_aws_amplify_cognito/common/user_code_delivery_details.dart';
+
+export 'package:flutter_aws_amplify_cognito/sign_up/signup_result.dart';
+export 'package:flutter_aws_amplify_cognito/sign_in/signin_result.dart';
+export 'package:flutter_aws_amplify_cognito/sign_in/signin_state.dart';
+export 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_result.dart';
+export 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_state.dart';
+export 'package:flutter_aws_amplify_cognito/tokens/tokens.dart';
+export 'package:flutter_aws_amplify_cognito/credentials/aws_credentials.dart';
+
 
 class FlutterAwsAmplifyCognito {
   static const MethodChannel _methodChannel =
@@ -214,9 +225,11 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Future<Map<String, String>> getTokens() async {
+  static Future<Tokens> getTokens() async {
     try {
-      return await _methodChannel.invokeMethod("getTokens");
+      final tokens = await _methodChannel.invokeMethod("getTokens");
+      return Tokens(
+          tokens['accessToken'], tokens['idToken'], tokens['refreshToken']);
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -240,15 +253,18 @@ class FlutterAwsAmplifyCognito {
 
   static Future<String> getRefreshToken() async {
     try {
-      return await _methodChannel.invokeMethod("");
+      return await _methodChannel.invokeMethod("getRefreshToken");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
   }
 
-  static Future<Map<String, String>> getCredentials() async {
+  static Future<AWSCredentials> getCredentials() async {
     try {
-      return await _methodChannel.invokeMethod("getCredentials");
+      final credentials = await _methodChannel.invokeMethod("getCredentials");
+      return AWSCredentials(
+        credentials['accessKeyId'], credentials['secretKey']
+      );
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -286,7 +302,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
-  static Stream<FlutterCognitoUserStatus> get onUserStatusChange {
+  static Stream<FlutterCognitoUserStatus> get addUserStateListener {
     return _eventChannel
         .receiveBroadcastStream()
         .map((event) => event.toString())

@@ -3,7 +3,6 @@ package `in`.agnostech.flutter_aws_amplify_cognito
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.SignOutOptions
