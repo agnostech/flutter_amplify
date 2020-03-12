@@ -8,6 +8,7 @@ import 'package:flutter_aws_amplify_cognito/device/device.dart';
 import 'package:flutter_aws_amplify_cognito/forgot_password/forgot_password_result.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/federated_signin_resullt.dart';
 import 'package:flutter_aws_amplify_cognito/sign_in/signin_result.dart';
+import 'package:flutter_aws_amplify_cognito/sign_in/signin_state.dart';
 import 'package:flutter_aws_amplify_cognito/sign_up/signup_result.dart';
 import 'package:flutter_aws_amplify_cognito/common/user_code_delivery_details.dart';
 import 'package:flutter_aws_amplify_cognito/tokens/tokens.dart';
@@ -29,12 +30,21 @@ export 'package:flutter_aws_amplify_cognito/sign_in/identity_provider.dart';
 export 'package:flutter_aws_amplify_cognito/device/device.dart';
 
 class FlutterAwsAmplifyCognito {
+
+  /// The main channel for communicating with native code for Android and iOS.
   static const MethodChannel _methodChannel =
       const MethodChannel('flutter_aws_amplify_cognito/cognito');
 
+
+  /// A listener for keeping a track of user state change [UserStatus.SIGNED_OUT, UserStatus.SIGNED_IN, etc.].
   static const EventChannel _eventChannel =
       const EventChannel('flutter_aws_amplify_cognito/cognito_user_status');
 
+
+  /// Helps user sign up in the Cognito User Pool with the required user attributes[Map<String, String>]
+  ///
+  /// Response is a [SignUpResult] object holding the [confirmationState] and the [UserCodeDeliveryDetails]
+  /// mentioning the details of confirmation code sent (For eg., in case of Multi Factor Authentication).
   static Future<SignUpResult> signUp(String username, String password,
       Map<String, String> userAttributes) async {
     try {
@@ -54,6 +64,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Confirms a multi factor sign up request from user's [username] and confirmation [code].
   static Future<SignUpResult> confirmSignUp(
       String username, String code) async {
     try {
@@ -72,6 +83,9 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+
+  /// Re-sends a confirmation code for confirming user sign up in case of no/delayed confirmation code
+  /// delivery via SMS/email.
   static Future<SignUpResult> resendSignUp(String username) async {
     try {
       Map<String, dynamic> arguments = Map<String, dynamic>();
@@ -88,6 +102,10 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Signs in the user in the Cognito User Pool.
+  ///
+  /// Response is a [SignInResult] object containing the [SignInState], user attributes [Map<String, String>]
+  /// and [UserCodeDeliveryDetails],
   static Future<SignInResult> signIn(String username, String password) async {
     try {
       Map<String, dynamic> arguments = Map<String, dynamic>();
@@ -107,6 +125,10 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Sign in confirmation for multi factor enabled sign in.
+  ///
+  /// Response is a [SignInResult] object containing the [SignInState], user attributes [Map<String, String>]
+  /// and [UserCodeDeliveryDetails].
   static Future<SignInResult> confirmSignIn(
       String confirmSignInChallenge) async {
     try {
@@ -126,6 +148,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Sends a confirmation code for resetting user's password using his/her [username].
   static Future<ForgotPasswordResult> forgotPassword(String username) async {
     try {
       Map<String, dynamic> arguments = Map<String, dynamic>();
@@ -145,6 +168,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Sets a new password using the [confirmationCode] and [newPassword] typed by the user.
   static Future<ForgotPasswordResult> confirmForgotPassword(
       String username, String newPassword, String confirmationCode) async {
     try {
@@ -166,6 +190,13 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Signs in a user in the Federated Identity Pool using a Federated Identity
+  /// [IdentityProvider.GOOGLE, IdentityProvider.FACEBOOK, etc.].
+  ///
+  /// User has to mention the [identityProvider], the JWT [token] received after sign in
+  ///
+  /// For SAML based authentication, [customRoleARN] can be mentioned as a parameter.
+  /// For Developer based custom authentication, a [cognitoIdentityId] can be mentioned.
   static Future<FederatedSignInResult> federatedSignIn(
       String identityProvider, String token,
       [String customRoleARN, String cognitoIdentityId]) async {
@@ -186,6 +217,9 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Initialize [AWSMobileClient] on the native side.
+  ///
+  /// Returns the current [UserStatus]
   static Future<UserStatus> initialize() async {
     try {
       return parseUserStatus(await _methodChannel.invokeMethod("initialize"));
@@ -194,6 +228,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Checks and returns true if the user is signed in.
   static Future<bool> isSignedIn() async {
     try {
       return await _methodChannel.invokeMethod("isSignedIn");
@@ -202,6 +237,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Checks the current user state and returns the [UserStatus].
   static Future<UserStatus> currentUserState() async {
     try {
       return parseUserStatus(
@@ -211,6 +247,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Signs out the user from the current application.
   static Future<void> signOut() async {
     try {
       await _methodChannel.invokeMethod("signOut");
@@ -219,6 +256,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Signs out the user globally from all the applications.
   static Future<bool> signOutGlobally() async {
     try {
       return await _methodChannel.invokeMethod("signOutGlobally");
@@ -227,6 +265,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Gets user attributes from the Cognito User Pool.
   static Future<Map<String, String>> getUserAttributes() async {
     try {
       final attributes = await _methodChannel.invokeMethod("getUserAttributes");
@@ -236,6 +275,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [username] for the current signed in user.
   static Future<String> getUsername() async {
     try {
       return await _methodChannel.invokeMethod("getUsername");
@@ -244,6 +284,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [identityId] for the current signed in user.
   static Future<String> getIdentityId() async {
     try {
       return await _methodChannel.invokeMethod("getIdentityId");
@@ -252,6 +293,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [Tokens] for the currently signed in user.
   static Future<Tokens> getTokens() async {
     try {
       final tokens = await _methodChannel.invokeMethod("getTokens");
@@ -262,6 +304,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [idToken] for the currently signed in user.
   static Future<String> getIdToken() async {
     try {
       return await _methodChannel.invokeMethod("getIdToken");
@@ -270,6 +313,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [accessToken] for the currently signed in user.
   static Future<String> getAccessToken() async {
     try {
       return await _methodChannel.invokeMethod("getAccessToken");
@@ -278,6 +322,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [refreshToken] for the currently signed in user.
   static Future<String> getRefreshToken() async {
     try {
       return await _methodChannel.invokeMethod("getRefreshToken");
@@ -286,6 +331,10 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Retrieves the [AWSCredentials] for the currently signed in user.
+  ///
+  /// These credentials can be used to access other AWS services or can be
+  /// exchanged for necessary certificates/credentials to use the other AWS services.
   static Future<AWSCredentials> getCredentials() async {
     try {
       final credentials = await _methodChannel.invokeMethod("getCredentials");
@@ -296,6 +345,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Sets the current user device has `remembered` in the Cognito User Pool.
   static Future<bool> trackDevice() async {
     try {
       return await _methodChannel.invokeMethod("trackDevice");
@@ -304,6 +354,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Sets the current user device has `not remembered` in the Cognito User Pool.
   static Future<bool> untrackDevice() async {
     try {
       return await _methodChannel.invokeMethod("untrackDevice");
@@ -312,6 +363,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Removes the current device affiliated with the user in the Cognito User Pool.
   static Future<bool> forgetDevice() async {
     try {
       return await _methodChannel.invokeMethod("forgetDevice");
@@ -320,6 +372,7 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Gets the current device's details as a [Device] response object.
   static Future<Device> getDeviceDetails() async {
     try {
       var deviceDetails = await _methodChannel.invokeMethod("getDeviceDetails");
@@ -335,6 +388,9 @@ class FlutterAwsAmplifyCognito {
     }
   }
 
+  /// Sets a listener to keep track of user State change
+  ///
+  /// [UserStatus] is received in the response.
   static Stream<UserStatus> get addUserStateListener {
     return _eventChannel
         .receiveBroadcastStream()
