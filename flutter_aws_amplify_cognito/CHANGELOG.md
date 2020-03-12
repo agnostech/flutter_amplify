@@ -9,3 +9,7 @@
 ## 1.0.0+2
 
 * updated README.md
+
+## 1.0.0+3
+
+* Added documentation
