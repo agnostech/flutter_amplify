@@ -1,15 +1,12 @@
 package `in`.agnostech.flutterawsamplifypubsub
 
-import android.icu.util.DateInterval
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobileconnectors.iot.*
 import com.amazonaws.regions.Region
-import com.amazonaws.regions.Regions
 import com.amazonaws.services.iot.AWSIotClient
 import com.amazonaws.services.iot.model.AttachPolicyRequest
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
-import kotlin.math.min
 
 class FlutterAwsAmplifyPubSub {
 
