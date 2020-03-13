@@ -6,17 +6,21 @@ import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
-class getConnectionStabilityTimeFlutterAwsAmplifyPubSubPlugin : FlutterPlugin {
+class FlutterAwsAmplifyPubSubPlugin : FlutterPlugin {
 
     private lateinit var methodChannel: MethodChannel
-    private lateinit var eventChannel: EventChannel
+    private lateinit var subsChannel: EventChannel
+    private lateinit var connectionChannel: EventChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        methodChannel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_aws_amplify_pubsub/config")
+        methodChannel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_aws_amplify_pubsub/config")
         methodChannel.setMethodCallHandler(PubSubHandler())
 
-        eventChannel = EventChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_aws_amplify_pubsub/sub")
-        eventChannel.setStreamHandler(PubSubHandler())
+        subsChannel = EventChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_aws_amplify_pubsub/sub")
+        subsChannel.setStreamHandler(PubSubHandler())
+
+        connectionChannel = EventChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_aws_amplify_pubsub/pubsub_conn")
+        connectionChannel.setStreamHandler(PubSubHandler())
     }
 
     companion object {
@@ -24,13 +28,16 @@ class getConnectionStabilityTimeFlutterAwsAmplifyPubSubPlugin : FlutterPlugin {
         fun registerWith(registrar: Registrar) {
             val channel = MethodChannel(registrar.messenger(), "flutter_aws_amplify_pubsub")
             channel.setMethodCallHandler(PubSubHandler())
-            val eventChannel = EventChannel(registrar.messenger(), "flutter_aws_amplify_pubsub/sub")
-            eventChannel.setStreamHandler(PubSubHandler())
+            val subsChannel = EventChannel(registrar.messenger(), "flutter_aws_amplify_pubsub/sub")
+            subsChannel.setStreamHandler(PubSubHandler())
+            val connectionChannel = EventChannel(registrar.messenger(), "flutter_aws_amplify_pubsub/pubsub_conn")
+            connectionChannel.setStreamHandler(PubSubHandler())
         }
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel.setMethodCallHandler(null)
-        eventChannel.setStreamHandler(null)
+        subsChannel.setStreamHandler(null)
+        connectionChannel.setStreamHandler(null)
     }
 }
