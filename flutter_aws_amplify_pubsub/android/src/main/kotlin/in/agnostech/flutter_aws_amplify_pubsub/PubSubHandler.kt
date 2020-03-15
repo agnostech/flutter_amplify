@@ -1,4 +1,4 @@
-package `in`.agnostech.flutterawsamplifypubsub
+package `in`.agnostech.flutter_aws_amplify_pubsub
 
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall

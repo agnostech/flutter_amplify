@@ -1,6 +1,6 @@
 //
 //  PubSubHandler.swift
-//  flutterawsamplifypubsub
+//  flutter_aws_amplify_pubsub
 //
 //  Created by Vishal Dubey on 13/03/20.
 //

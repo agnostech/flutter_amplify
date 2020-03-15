@@ -1,4 +1,4 @@
-# flutterawsamplifypubsub
+# flutter_aws_amplify_pubsub
 
 Flutter Plugin For AWS Amplify PubSub
 

@@ -1,6 +1,6 @@
-# flutterawsamplifypubsub_example
+# flutter_aws_amplify_pubsub_example
 
-Demonstrates how to use the flutterawsamplifypubsub plugin.
+Demonstrates how to use the flutter_aws_amplify_pubsub plugin.
 
 ## Getting Started
 

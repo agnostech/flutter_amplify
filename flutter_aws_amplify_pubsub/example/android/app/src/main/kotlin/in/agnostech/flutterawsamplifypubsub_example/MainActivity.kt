@@ -1,4 +1,4 @@
-package in.agnostech.flutterawsamplifypubsub_example
+package in.agnostech.flutter_aws_amplify_pubsub_example
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

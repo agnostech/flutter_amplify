@@ -1,5 +1,5 @@
-name: flutterawsamplifypubsub_example
-description: Demonstrates how to use the flutterawsamplifypubsub plugin.
+name: flutter_aws_amplify_pubsub_example
+description: Demonstrates how to use the flutter_aws_amplify_pubsub plugin.
 publish_to: 'none'
 
 environment:
@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutterawsamplifypubsub:
+  flutter_aws_amplify_pubsub:
     path: ../
 
 # For information on the generic Dart part of this file, see the

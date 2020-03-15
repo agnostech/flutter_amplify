@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint flutterawsamplifypubsub.podspec' to validate before publishing.
+# Run `pod lib lint flutter_aws_amplify_pubsub.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'flutterawsamplifypubsub'
+  s.name             = 'flutter_aws_amplify_pubsub'
   s.version          = '0.0.1'
   s.summary          = 'Flutter Plugin For AWS Amplify PubSub'
   s.description      = <<-DESC

@@ -12,14 +12,14 @@ PODS:
     - AWSAuthCore (= 2.13.0)
     - AWSCognitoIdentityProvider (= 2.13.0)
   - Flutter (1.0.0)
-  - flutterawsamplifypubsub (0.0.1):
+  - flutter_aws_amplify_pubsub (0.0.1):
     - AWSIoT (~> 2.13.0)
     - AWSMobileClient (~> 2.13.0)
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutterawsamplifypubsub (from `.symlinks/plugins/flutterawsamplifypubsub/ios`)
+  - flutter_aws_amplify_pubsub (from `.symlinks/plugins/flutter_aws_amplify_pubsub/ios`)
 
 SPEC REPOS:
   trunk:
@@ -33,8 +33,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutterawsamplifypubsub:
-    :path: ".symlinks/plugins/flutterawsamplifypubsub/ios"
+  flutter_aws_amplify_pubsub:
+    :path: ".symlinks/plugins/flutter_aws_amplify_pubsub/ios"
 
 SPEC CHECKSUMS:
   AWSAuthCore: 8fa7f8a8ddd6b0922d9989d8eaa8e7bac87b02fc
@@ -44,7 +44,7 @@ SPEC CHECKSUMS:
   AWSIoT: 65a3cda7ea8b10bfb46492bed7f98e89f60e52e0
   AWSMobileClient: e8922b6abcafa01d0fb630a93f64397f3bc73079
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutterawsamplifypubsub: 3299399be2bed78ba406c252243bf447a97f84bf
+  flutter_aws_amplify_pubsub: ac3104438c2a5b5ebb44bde634dfd5ca362747eb
 
 PODFILE CHECKSUM: 9ec0b926d741f3b13993aceabf2687bc78d2468b
 

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterawsamplifypubsub/flutter_aws_amplify_pubsub.dart';
+import 'package:flutter_aws_amplify_pubsub/flutter_aws_amplify_pubsub.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('flutterawsamplifypubsub');
@@ -18,6 +18,5 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await FlutterAwsAmplifyPubSub.platformVersion, '42');
   });
 }

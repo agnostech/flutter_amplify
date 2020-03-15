@@ -1,4 +1,4 @@
-group 'in.agnostech.flutterawsamplifypubsub'
+group 'in.agnostech.flutter_aws_amplify_pubsub'
 version '1.0-SNAPSHOT'
 
 buildscript {

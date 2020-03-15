@@ -1,4 +1,4 @@
-package `in`.agnostech.flutterawsamplifypubsub
+package `in`.agnostech.flutter_aws_amplify_pubsub
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin

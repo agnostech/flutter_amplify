@@ -1,4 +1,4 @@
-package `in`.agnostech.flutterawsamplifypubsub
+package `in`.agnostech.flutter_aws_amplify_pubsub
 
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobileconnectors.iot.*
