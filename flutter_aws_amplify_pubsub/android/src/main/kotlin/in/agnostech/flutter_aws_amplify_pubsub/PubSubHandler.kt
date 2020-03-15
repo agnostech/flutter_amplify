@@ -5,7 +5,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 
-class PubSubHandler: MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
+object PubSubHandler: MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
 
     private lateinit var subscriptionEvent: EventChannel.EventSink
 

@@ -14,24 +14,24 @@ class FlutterAwsAmplifyPubSubPlugin : FlutterPlugin {
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_aws_amplify_pubsub/config")
-        methodChannel.setMethodCallHandler(PubSubHandler())
+        methodChannel.setMethodCallHandler(PubSubHandler)
 
         subsChannel = EventChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_aws_amplify_pubsub/sub")
-        subsChannel.setStreamHandler(PubSubHandler())
+        subsChannel.setStreamHandler(PubSubHandler)
 
         connectionChannel = EventChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_aws_amplify_pubsub/pubsub_conn")
-        connectionChannel.setStreamHandler(PubSubHandler())
+        connectionChannel.setStreamHandler(PubSubHandler)
     }
 
     companion object {
         @JvmStatic
         fun registerWith(registrar: Registrar) {
             val channel = MethodChannel(registrar.messenger(), "flutter_aws_amplify_pubsub")
-            channel.setMethodCallHandler(PubSubHandler())
+            channel.setMethodCallHandler(PubSubHandler)
             val subsChannel = EventChannel(registrar.messenger(), "flutter_aws_amplify_pubsub/sub")
-            subsChannel.setStreamHandler(PubSubHandler())
+            subsChannel.setStreamHandler(PubSubHandler)
             val connectionChannel = EventChannel(registrar.messenger(), "flutter_aws_amplify_pubsub/pubsub_conn")
-            connectionChannel.setStreamHandler(PubSubHandler())
+            connectionChannel.setStreamHandler(PubSubHandler)
         }
     }
 
