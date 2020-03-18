@@ -38,12 +38,18 @@ class FlutterAwsAmplifyPubSub {
         fun isAutoReconnect(result: MethodChannel.Result) = result.success(awsIotManager.isAutoReconnect)
 
         fun setAutoReconnect(result: MethodChannel.Result, autoReconnect: Boolean) {
-            awsIotManager.isAutoReconnect = autoReconnect
+            try {
+                awsIotManager.isAutoReconnect = autoReconnect
+                result.success(true)
+            } catch(e: Error) {
+                result.error("Error", "Error", e.localizedMessage)
+            }
         }
 
         fun setReconnectRetryLimits(result: MethodChannel.Result, minTimeout: Int, maxTimeout: Int) {
             try {
                 awsIotManager.setReconnectRetryLimits(minTimeout, maxTimeout)
+                result.success(true)
             } catch (e: Error) {
                 result.error("Error", "Error changing reconnect retry limits", e.localizedMessage)
             }
@@ -89,6 +95,7 @@ class FlutterAwsAmplifyPubSub {
         fun setOfflinePublishQueueBound(result: MethodChannel.Result, bound: Int) {
             try {
                 awsIotManager.offlinePublishQueueBound = bound
+                result.success(true)
             } catch (e: Error) {
                 result.error("Error", "Error setting offline publish queue bond", e.localizedMessage)
             }
@@ -99,6 +106,7 @@ class FlutterAwsAmplifyPubSub {
         fun setDrainingInterval(result: MethodChannel.Result, interval: Long) {
             try {
                 awsIotManager.drainingInterval = interval
+                result.success(true)
             } catch (e: Error) {
                 result.error("Error", "Error setting draining interval", e.localizedMessage)
             }
