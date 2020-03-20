@@ -1,5 +1,7 @@
 package `in`.agnostech.flutter_aws_amplify_cognito
 
+import android.os.Handler
+import android.os.Looper
 import io.flutter.plugin.common.EventChannel
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.UserStateListener
@@ -10,7 +12,9 @@ class CognitoUserStatusReceiver: EventChannel.StreamHandler {
 
     override fun onListen(arguments: Any?, event: EventChannel.EventSink) {
         userStateListener = UserStateListener {
-            event.success(it.userState.name)
+            Handler(Looper.getMainLooper()).post {
+                event.success(it.userState.name)
+            }
         }
         AWSMobileClient.getInstance().addUserStateListener(userStateListener)
     }
