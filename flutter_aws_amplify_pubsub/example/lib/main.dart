@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_aws_amplify_cognito/flutter_aws_amplify_cognito.dart';
 import 'package:flutter_aws_amplify_pubsub/flutter_aws_amplify_pubsub.dart';
 
@@ -23,16 +22,53 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    FlutterAwsAmplifyCognito.initialize().then((UserStatus status) {
-      print("from initialize");
+    try {
+      UserStatus status = await FlutterAwsAmplifyCognito.initialize();
       print(status);
-      FlutterAwsAmplifyCognito.addUserStateListener.listen((UserStatus status) {
-        print("from listener");
-        print(status);
+      String id = await FlutterAwsAmplifyCognito.getIdentityId();
+      print(id);
+      bool isInitialized = await FlutterAwsAmplifyPubSub.initialize(
+          "iot-mobile1", "a1b9wu8ptcvv1b-ats.iot.us-west-2.amazonaws.com");
+      print(isInitialized);
+      bool attachedPolicy =
+          await FlutterAwsAmplifyPubSub.attachPolicy("iot-test", "us-west-2");
+      print(attachedPolicy);
+      FlutterAwsAmplifyPubSub.getConnectionStatusAndMessages
+      .listen((data) {
+        print(data);
+        if (data is AWSIoTMessage) {
+          print(data.topic);
+          print(data.payload);
+        } else {
+          if (data == AWSIoTConnectionStatus.Connected) {
+            FlutterAwsAmplifyPubSub.subscribeToTopic(
+                "iot-flutter", AWSIotMqttQos.QOS0)
+                .then((value) => print(value))
+                .catchError((error) => print(error));
+          }
+        }
       });
-    }).catchError((error) {
-      print(error);
-    });
+//      FlutterAwsAmplifyPubSub.getConnectionStatus
+//          .listen((AWSIoTConnectionStatus status){
+//            print(status);
+//            print(status == AWSIoTConnectionStatus.Connected);
+//        if (status == AWSIoTConnectionStatus.Connected) {
+//          FlutterAwsAmplifyPubSub.subscribeToTopic(
+//              "iot-flutter", AWSIotMqttQos.QOS0).then((value) => print(value)).catchError((error) => print(error));
+//        }
+//      });
+
+//      FlutterAwsAmplifyPubSub.getMessages.listen((AWSIoTMessage message) {
+//        print(message.topic);
+//        print(message.payload);
+//      });
+
+      bool connection = await FlutterAwsAmplifyPubSub.connect();
+      print(connection);
+
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -63,11 +99,11 @@ class _MyAppState extends State<MyApp> {
 //            });
             FlutterAwsAmplifyCognito.signIn("yzvishal.vd@gmail.com", "vishal69")
                 .then((SignInResult result) {
-                  //print(result.signInState);
-            })
-                .catchError((error) {
-                  print("error");
-                  print(error);
+              print(result.signInState);
+              print(result.codeDetails);
+            }).catchError((error) {
+              print("error");
+              print(error);
             });
           },
           child: Text('Sign up'),

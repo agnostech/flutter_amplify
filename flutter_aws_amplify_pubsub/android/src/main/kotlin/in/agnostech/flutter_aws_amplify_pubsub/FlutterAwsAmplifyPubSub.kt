@@ -1,5 +1,8 @@
 package `in`.agnostech.flutter_aws_amplify_pubsub
 
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobileconnectors.iot.*
 import com.amazonaws.regions.Region
@@ -7,6 +10,9 @@ import com.amazonaws.services.iot.AWSIotClient
 import com.amazonaws.services.iot.model.AttachPolicyRequest
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FlutterAwsAmplifyPubSub {
 
@@ -41,7 +47,7 @@ class FlutterAwsAmplifyPubSub {
             try {
                 awsIotManager.isAutoReconnect = autoReconnect
                 result.success(true)
-            } catch(e: Error) {
+            } catch (e: Error) {
                 result.error("Error", "Error", e.localizedMessage)
             }
         }
@@ -185,9 +191,16 @@ class FlutterAwsAmplifyPubSub {
             try {
                 awsIotManager.connect(AWSMobileClient.getInstance()) { status, throwable ->
                     if (throwable != null) {
-                        connectEvent.error("Error", "Error connecting", throwable.localizedMessage)
+                        Handler(Looper.getMainLooper()).post {
+                            connectEvent.error("Error", "Error connecting", throwable.localizedMessage)
+                        }
                     }
-                    connectEvent.success(status.name)
+                    Handler(Looper.getMainLooper()).post {
+                        connectEvent.success(hashMapOf(
+                                "type" to "connection",
+                                "status" to status.name
+                        ))
+                    }
                 }
                 result.success(true)
             } catch (e: Error) {
@@ -208,18 +221,25 @@ class FlutterAwsAmplifyPubSub {
             try {
                 awsIotManager.subscribeToTopic(subscriptionTopic, if (qos == 0) AWSIotMqttQos.QOS0 else AWSIotMqttQos.QOS1, object : AWSIotMqttSubscriptionStatusCallback {
                     override fun onSuccess() {
-                        result.success(true)
+                        Handler(Looper.getMainLooper()).post {
+                            result.success(true)
+                        }
                     }
 
                     override fun onFailure(exception: Throwable) {
-                        result.error("Error", "Error subscribing to $subscriptionTopic", exception.localizedMessage)
+                        Handler(Looper.getMainLooper()).post {
+                            result.error("Error", "Error subscribing to $subscriptionTopic", exception.localizedMessage)
+                        }
                     }
 
                 }) { topic, data ->
-                    messageEvent.success(hashMapOf(
-                            "topic" to topic,
-                            "data" to String(data, Charsets.UTF_8)
-                    ))
+                    Handler(Looper.getMainLooper()).post {
+                        messageEvent.success(hashMapOf(
+                                "type" to "message",
+                                "topic" to topic,
+                                "data" to String(data, Charsets.UTF_8)
+                        ))
+                    }
                 }
                 result.success(true)
             } catch (e: Error) {
@@ -231,22 +251,28 @@ class FlutterAwsAmplifyPubSub {
             try {
                 awsIotManager.unsubscribeTopic(topic)
                 result.success(true)
-            } catch(e: Error) {
+            } catch (e: Error) {
                 result.error("Error", "Error", e.localizedMessage)
             }
         }
 
         fun attachPolicy(result: MethodChannel.Result, policyName: String, awsRegion: String) {
-            try {
-                val attachPolicyReq = AttachPolicyRequest()
-                attachPolicyReq.policyName = policyName
-                attachPolicyReq.target = AWSMobileClient.getInstance().identityId
-                val iotAndroidClient = AWSIotClient(AWSMobileClient.getInstance())
-                iotAndroidClient.setRegion(Region.getRegion(awsRegion))
-                iotAndroidClient.attachPolicy(attachPolicyReq)
-                result.success(true)
-            } catch(e: Error) {
-                result.error("Error", "Error attaching policy", e.localizedMessage)
+            GlobalScope.launch(Dispatchers.Default) {
+                try {
+                    val attachPolicyReq = AttachPolicyRequest()
+                    attachPolicyReq.policyName = policyName
+                    attachPolicyReq.target = AWSMobileClient.getInstance().identityId
+                    val iotAndroidClient = AWSIotClient(AWSMobileClient.getInstance())
+                    iotAndroidClient.setRegion(Region.getRegion(awsRegion))
+                    iotAndroidClient.attachPolicy(attachPolicyReq)
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(true)
+                    }
+                } catch (e: Error) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("Error", "Error attaching policy", e.localizedMessage)
+                    }
+                }
             }
         }
 
@@ -254,7 +280,7 @@ class FlutterAwsAmplifyPubSub {
             try {
                 awsIotManager.publishString(payload, topic, if (qos == 0) AWSIotMqttQos.QOS0 else AWSIotMqttQos.QOS1)
                 result.success(true)
-            } catch(e: Error) {
+            } catch (e: Error) {
                 result.error("Error", "Error", e.localizedMessage)
             }
         }
