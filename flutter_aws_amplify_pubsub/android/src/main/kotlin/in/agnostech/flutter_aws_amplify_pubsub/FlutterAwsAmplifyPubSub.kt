@@ -241,7 +241,6 @@ class FlutterAwsAmplifyPubSub {
                         ))
                     }
                 }
-                result.success(true)
             } catch (e: Error) {
                 result.error("Error", "Error", e.localizedMessage)
             }

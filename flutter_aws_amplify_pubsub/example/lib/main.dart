@@ -45,6 +45,10 @@ class _MyAppState extends State<MyApp> {
                 "iot-flutter", AWSIotMqttQos.QOS0)
                 .then((value) => print(value))
                 .catchError((error) => print(error));
+            FlutterAwsAmplifyPubSub.subscribeToTopic(
+                r'''$aws/things/esp32_B946B0/shadow/get''', AWSIotMqttQos.QOS0)
+                .then((value) => print(value))
+                .catchError((error) => print(error));
           }
         }
       });
