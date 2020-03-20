@@ -1,0 +1,20 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-iot-example-test-163228-authRole",
+            "UnauthRoleArn": "arn:aws:iam::014778990808:role/amplify-iot-example-test-163228-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::014778990808:role/amplify-iot-example-test-163228-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-iot-example-test-163228-deployment",
+            "UnauthRoleName": "amplify-iot-example-test-163228-unauthRole",
+            "StackName": "amplify-iot-example-test-163228",
+            "StackId": "arn:aws:cloudformation:us-west-2:014778990808:stack/amplify-iot-example-test-163228/4dbc8610-6a9a-11ea-9d8f-0220ef6e1d1c",
+            "AmplifyAppId": "dakywfhbt48zo"
+        },
+        "categories": {
+            "auth": {
+                "iotexample9f0e095d": {}
+            }
+        }
+    }
+}
