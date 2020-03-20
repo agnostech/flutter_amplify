@@ -55,10 +55,11 @@ class FlutterAwsAmplifyCognito {
 
       final signUpResult =
           await _methodChannel.invokeMethod("signUp", arguments);
+
       return SignUpResult(
           signUpResult['confirmationState'],
-          UserCodeDeliveryDetails(signUpResult['destination'],
-              signUpResult['deliveryMedium'], signUpResult['attributeName']));
+          UserCodeDeliveryDetails(signUpResult['destination'] ?? "" ,
+              signUpResult['deliveryMedium'] ?? "", signUpResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -76,8 +77,8 @@ class FlutterAwsAmplifyCognito {
           await _methodChannel.invokeMethod("confirmSignUp", arguments);
       return SignUpResult(
           signUpResult['confirmationState'],
-          UserCodeDeliveryDetails(signUpResult['destination'],
-              signUpResult['deliveryMedium'], signUpResult['attributeName']));
+          UserCodeDeliveryDetails(signUpResult['destination'] ?? "",
+              signUpResult['deliveryMedium'] ?? "", signUpResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -95,8 +96,8 @@ class FlutterAwsAmplifyCognito {
           await _methodChannel.invokeMethod("resendSignUp", arguments);
       return SignUpResult(
           signUpResult['confirmationState'],
-          UserCodeDeliveryDetails(signUpResult['destination'],
-              signUpResult['deliveryMedium'], signUpResult['attributeName']));
+          UserCodeDeliveryDetails(signUpResult['destination'] ?? "",
+              signUpResult['deliveryMedium'] ?? "", signUpResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -117,9 +118,9 @@ class FlutterAwsAmplifyCognito {
 
       return SignInResult(
           parseSignInState(signInResult['signInState']),
-          Map<String, String>.from(signInResult['parameters']),
-          UserCodeDeliveryDetails(signInResult['destination'],
-              signInResult['deliveryMedium'], signInResult['attributeName']));
+          Map<String, String>.from(signInResult['parameters'] ?? Map<String, String>()),
+          UserCodeDeliveryDetails(signInResult['destination'] ?? "",
+              signInResult['deliveryMedium'] ?? "", signInResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -140,9 +141,9 @@ class FlutterAwsAmplifyCognito {
 
       return SignInResult(
           parseSignInState(signInResult['signInState']),
-          Map<String, String>.from(signInResult['parameters']),
-          UserCodeDeliveryDetails(signInResult['destination'],
-              signInResult['deliveryMedium'], signInResult['attributeName']));
+          Map<String, String>.from(signInResult['parameters'] ?? Map<String, String>()),
+          UserCodeDeliveryDetails(signInResult['destination'] ?? "",
+              signInResult['deliveryMedium'] ?? "", signInResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -160,9 +161,9 @@ class FlutterAwsAmplifyCognito {
       return ForgotPasswordResult(
           parseForgotPasswordState(forgotPasswordResult['state']),
           UserCodeDeliveryDetails(
-              forgotPasswordResult['destination'],
-              forgotPasswordResult['deliveryMedium'],
-              forgotPasswordResult['attributeName']));
+              forgotPasswordResult['destination'] ?? "",
+              forgotPasswordResult['deliveryMedium'] ?? "",
+              forgotPasswordResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -182,9 +183,9 @@ class FlutterAwsAmplifyCognito {
       return ForgotPasswordResult(
           parseForgotPasswordState(forgotPasswordResult['state']),
           UserCodeDeliveryDetails(
-              forgotPasswordResult['destination'],
-              forgotPasswordResult['deliveryMedium'],
-              forgotPasswordResult['attributeName']));
+              forgotPasswordResult['destination'] ?? "",
+              forgotPasswordResult['deliveryMedium'] ?? "",
+              forgotPasswordResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }

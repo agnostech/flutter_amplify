@@ -1,15 +1,24 @@
-## 1.0.0
+## 1.0.0+5
 
-* Initial release.
+* Fixed null pointer checks for user attributes
 
-## 1.0.0+1
+## 1.0.0+4
 
-* formatting fixes.
+* Fixed User state event listener call on the main thread
+
+## 1.0.0+3
+
+* Added documentation
 
 ## 1.0.0+2
 
 * updated README.md
 
-## 1.0.0+3
+## 1.0.0+1
 
-* Added documentation
+* formatting fixes.
+
+
+## 1.0.0
+
+* Initial release.

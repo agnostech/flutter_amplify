@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
       print("from initialize");
       print(status);
       FlutterAwsAmplifyCognito.addUserStateListener.listen((UserStatus status) {
+        print("from listener");
         print(status);
       });
     }).catchError((error) {
@@ -62,9 +63,10 @@ class _MyAppState extends State<MyApp> {
 //            });
             FlutterAwsAmplifyCognito.signIn("yzvishal.vd@gmail.com", "vishal69")
                 .then((SignInResult result) {
-                  print(result.signInState);
+                  //print(result.signInState);
             })
                 .catchError((error) {
+                  print("error");
                   print(error);
             });
           },

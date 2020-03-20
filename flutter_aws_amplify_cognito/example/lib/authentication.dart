@@ -361,7 +361,13 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 expanded: RaisedButton(
                     onPressed: () {
-                        FlutterAwsAmplifyCognito.signIn("yzvishal.vd@gmail.com", "vishalpvc").then((tracked) {
+                        FlutterAwsAmplifyCognito.addUserStateListener
+                        .listen((UserStatus status) {
+                            print("listener");
+                            print(status);
+                        });
+                        FlutterAwsAmplifyCognito.signIn("yzvishal.vd@gmail.com", "vishal69").then((tracked) {
+                            print("sign in k andar");
                             print(tracked.signInState);
                             print(tracked.parameters);
 //                    setState(() {

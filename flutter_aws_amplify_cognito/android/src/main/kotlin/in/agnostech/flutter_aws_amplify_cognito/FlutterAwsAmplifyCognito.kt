@@ -20,9 +20,9 @@ class FlutterAwsAmplifyCognito {
                         }
                     }
 
-                    override fun onError(e: Exception?) {
+                    override fun onError(e: Exception) {
                         Handler(Looper.getMainLooper()).post {
-
+                            result.error("Error", "Error getting current user state", e.localizedMessage)
                         }
                     }
 
@@ -37,7 +37,7 @@ class FlutterAwsAmplifyCognito {
 
                     override fun onError(e: Exception) {
                         Handler(Looper.getMainLooper()).post {
-                            result.error("Error", e.localizedMessage, "Error fetching user details")
+                            result.error("Error", "Error fetching user details",  e.localizedMessage)
                         }
                     }
                 })
@@ -273,7 +273,7 @@ class FlutterAwsAmplifyCognito {
                                             "signInState" to signInResult.signInState.name,
                                             "parameters" to signInResult.parameters,
                                             "destination" to userCodeDeliveryDetails?.destination,
-                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium,
+                                            "deliveryMedium" to userCodeDeliveryDetails?.deliveryMedium ,
                                             "attributeName" to userCodeDeliveryDetails?.attributeName
                                     ))
                                 }

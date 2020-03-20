@@ -75,7 +75,7 @@ packages:
       name: flutter_aws_amplify_cognito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0+3"
+    version: "1.0.0+4"
   flutter_aws_amplify_pubsub:
     dependency: "direct dev"
     description:
