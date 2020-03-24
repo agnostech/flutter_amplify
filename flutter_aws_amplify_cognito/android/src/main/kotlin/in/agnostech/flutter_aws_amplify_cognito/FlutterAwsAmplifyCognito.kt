@@ -7,6 +7,9 @@ import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.mobile.client.*
 import com.amazonaws.mobile.client.results.*
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class FlutterAwsAmplifyCognito {
@@ -114,29 +117,47 @@ class FlutterAwsAmplifyCognito {
         })
 
         fun getIdToken(result: MethodChannel.Result) {
-            try {
-                val idToken = AWSMobileClient.getInstance().tokens.idToken.tokenString
-                result.success(idToken);
-            } catch (e: Error) {
-                result.error("Error", "Error getting ID Token", e.localizedMessage)
+            GlobalScope.launch(Dispatchers.Default) {
+                try {
+                    val idToken = AWSMobileClient.getInstance().tokens.idToken.tokenString
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(idToken)
+                    }
+                } catch (e: Error) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("Error", "Error getting ID Token", e.localizedMessage)
+                    }
+                }
             }
         }
 
         fun getAccessToken(result: MethodChannel.Result) {
-            try {
-                val accessToken = AWSMobileClient.getInstance().tokens.accessToken.tokenString
-                result.success(accessToken);
-            } catch (e: Error) {
-                result.error("Error", "Error getting Access Token", e.localizedMessage)
+            GlobalScope.launch(Dispatchers.Default) {
+                try {
+                    val accessToken = AWSMobileClient.getInstance().tokens.accessToken.tokenString
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(accessToken)
+                    }
+                } catch (e: Error) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("Error", "Error getting Access Token", e.localizedMessage)
+                    }
+                }
             }
         }
 
         fun getRefreshToken(result: MethodChannel.Result){
-            try {
-                val refreshToken = AWSMobileClient.getInstance().tokens.refreshToken.tokenString
-                result.success(refreshToken)
-            } catch (e: Error) {
-                result.error("Error", "Error getting Refresh Token", e.localizedMessage)
+            GlobalScope.launch(Dispatchers.Default) {
+                try {
+                    val refreshToken = AWSMobileClient.getInstance().tokens.refreshToken.tokenString
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(refreshToken)
+                    }
+                } catch (e: Error) {
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("Error", "Error getting Refresh Token", e.localizedMessage)
+                    }
+                }
             }
         }
 

@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
                 .then((value) => print(value))
                 .catchError((error) => print(error));
             FlutterAwsAmplifyPubSub.subscribeToTopic(
-                r'''$aws/things/esp32_B946B0/shadow/get''', AWSIotMqttQos.QOS0)
+                r'''$aws/things/esp32_B946B0/shadow/get/accepted''', AWSIotMqttQos.QOS0)
                 .then((value) => print(value))
                 .catchError((error) => print(error));
           }
