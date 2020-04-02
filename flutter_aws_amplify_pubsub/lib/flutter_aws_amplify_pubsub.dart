@@ -11,11 +11,12 @@ export 'package:flutter_aws_amplify_pubsub/common/connection_status.dart';
 export 'package:flutter_aws_amplify_pubsub/common/message.dart';
 
 class FlutterAwsAmplifyPubSub {
-    static const MethodChannel _methodChannel =
-    const MethodChannel('flutter_aws_amplify_pubsub/config');
 
     static const EventChannel _eventsChannel =
     const EventChannel('flutter_aws_amplify_pubsub/subscriptions');
+
+    static const MethodChannel _methodChannel =
+    const MethodChannel('flutter_aws_amplify_pubsub/config');
 
     static Future<bool> initialize(String mqttClientId,
         String awsIoTEndPointUrl) async {

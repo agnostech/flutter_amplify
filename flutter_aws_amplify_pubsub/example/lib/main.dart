@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -12,12 +14,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  bool _platformVersion = true;
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+//    FlutterAwsAmplifyCognito.initialize()
+//    .then((value) => print(value));
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -28,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       String id = await FlutterAwsAmplifyCognito.getIdentityId();
       print(id);
       bool isInitialized = await FlutterAwsAmplifyPubSub.initialize(
-          "iot-mobile1", "a1b9wu8ptcvv1b-ats.iot.us-west-2.amazonaws.com");
+          "iot-mobile1", "a1b9wu8ptcvv1b.iot.us-west-2.amazonaws.com");
       print(isInitialized);
       bool attachedPolicy =
           await FlutterAwsAmplifyPubSub.attachPolicy("iot-test", "us-west-2");
@@ -46,7 +50,7 @@ class _MyAppState extends State<MyApp> {
                 .then((value) => print(value))
                 .catchError((error) => print(error));
             FlutterAwsAmplifyPubSub.subscribeToTopic(
-                r'''$aws/things/esp32_B946B0/shadow/get/accepted''', AWSIotMqttQos.QOS0)
+                r'''$aws/things/vishalaf-bed/shadow/update/accepted''', AWSIotMqttQos.QOS0)
                 .then((value) => print(value))
                 .catchError((error) => print(error));
           }
@@ -82,9 +86,22 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-            child: RaisedButton(
-          onPressed: () {
+        body: Column(
+          children: <Widget>[
+            Container(
+              child: RaisedButton(
+                child: Text('Send Message'),
+                onPressed: () async {
+                  final sent = await FlutterAwsAmplifyPubSub.publishString(jsonEncode({"state": {"desired": {"one": 0, "two": 0, "three": 0, "four": 1}}}), r'''$aws/things/vishalaf-bed/shadow/update''', 1);
+                  setState(() {
+                    _platformVersion = !_platformVersion;
+                  });
+                },
+              ),
+            ),
+            Container(
+                child: RaisedButton(
+              onPressed: () {
 //            Map<String, String> attributes = Map<String, String>();
 //            attributes["name"] = "Vishal Dubey";
 //            attributes["email"] = "yzvishal.vd@gmail.com";
@@ -101,17 +118,19 @@ class _MyAppState extends State<MyApp> {
 //            }).catchError((error) {
 //              print(error);
 //            });
-            FlutterAwsAmplifyCognito.signIn("yzvishal.vd@gmail.com", "vishal69")
-                .then((SignInResult result) {
-              print(result.signInState);
-              print(result.codeDetails);
-            }).catchError((error) {
-              print("error");
-              print(error);
-            });
-          },
-          child: Text('Sign up'),
-        )),
+                FlutterAwsAmplifyCognito.signIn("yzvishal.vd@gmail.com", "vishal69")
+                    .then((SignInResult result) {
+                  print(result.signInState);
+                  print(result.codeDetails);
+                }).catchError((error) {
+                  print("error");
+                  print(error);
+                });
+              },
+              child: Text('Sign up'),
+            )),
+          ],
+        ),
       ),
     );
   }

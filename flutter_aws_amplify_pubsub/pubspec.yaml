@@ -1,8 +1,8 @@
 name: flutter_aws_amplify_pubsub
 description: Flutter Plugin For AWS Amplify PubSub
-version: 0.0.1
-author:
-homepage:
+version: 1.0.0
+author: Agnostech Innovations
+homepage: https://agnostech.github.io/flutteramplify
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

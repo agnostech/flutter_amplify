@@ -1,3 +1,7 @@
+## 1.0.0+6
+
+* Fixed token calls on the main thread
+
 ## 1.0.0+5
 
 * Fixed null pointer checks for user attributes

@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_aws_amplify_pubsub'
-  s.version          = '0.0.1'
+  s.version          = '1.0.0'
   s.summary          = 'Flutter Plugin For AWS Amplify PubSub'
   s.description      = <<-DESC
 Flutter Plugin For AWS Amplify PubSub
@@ -17,8 +17,8 @@ Flutter Plugin For AWS Amplify PubSub
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
 
-  s.dependency 'AWSIoT', '~> 2.13.0'
-  s.dependency 'AWSMobileClient', '~> 2.13.0' 
+  s.dependency 'AWSIoT', '~> 2.12.0'
+  s.dependency 'AWSMobileClient', '~> 2.12.0'
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
   s.swift_version = '5.0'
