@@ -37,6 +37,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error initializing AWSMobileClient", details: error?.localizedDescription))
                 }
+                return
             }
             switch (userState) {
             case .guest:
@@ -81,6 +82,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error signing out", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(true)
@@ -94,6 +96,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting user attributes", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(userAttributes)
@@ -115,6 +118,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting tokens", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(
@@ -132,6 +136,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting idToken", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(tokens?.idToken?.tokenString)
@@ -145,6 +150,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting accessToken", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(tokens?.accessToken?.tokenString)
@@ -158,6 +164,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting refreshToken", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(tokens?.refreshToken?.tokenString)
@@ -171,6 +178,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting AWS credentails", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result([
@@ -190,6 +198,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error signing up", details: error?.localizedDescription))
                 }
+                return
             }
             if (signUpResult!.signUpConfirmationState == SignUpConfirmationState.confirmed) {
                 DispatchQueue.main.async {
@@ -220,6 +229,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error confirming sign up", details: error?.localizedDescription))
                 }
+                return
             }
             if (signUpResult!.signUpConfirmationState == SignUpConfirmationState.confirmed) {
                 DispatchQueue.main.async {
@@ -250,6 +260,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error resending signing up code", details: error?.localizedDescription))
                 }
+                return
             }
             let userCodeDeliveryDetails = signUpResult?.codeDeliveryDetails
             DispatchQueue.main.async {
@@ -269,6 +280,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error signing in", details: error?.localizedDescription))
                 }
+                return
             }
             var signInState: String = ""
             
@@ -314,6 +326,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error confirming sign in", details: error?.localizedDescription))
                 }
+                return
             }
             var signInState: String = ""
             
@@ -359,6 +372,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error requesting password reset", details: error?.localizedDescription))
                 }
+                return
             }
             
             var forgotPasswordState: String = ""
@@ -394,6 +408,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error confirming password reset", details: error?.localizedDescription))
                 }
+                return
             }
             
             var forgotPasswordState: String = ""
@@ -427,6 +442,7 @@ class SwiftFlutterAwsAmplifyCognito {
                     DispatchQueue.main.async {
                         result(FlutterError(code: "Error", message: "Error tracking device", details: error?.localizedDescription))
                     }
+                    return
                 }
                 DispatchQueue.main.async {
                     result(true)
@@ -441,6 +457,7 @@ class SwiftFlutterAwsAmplifyCognito {
                     DispatchQueue.main.async {
                         result(FlutterError(code: "Error", message: "Error untracking device", details: error?.localizedDescription))
                     }
+                    return
                 }
                 DispatchQueue.main.async {
                     result(true)
@@ -454,6 +471,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error forgetting device", details: error?.localizedDescription))
                 }
+                return
             }
             DispatchQueue.main.async {
                 result(true)
@@ -467,6 +485,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 DispatchQueue.main.async {
                     result(FlutterError(code: "Error", message: "Error getting device details", details: error?.localizedDescription))
                 }
+                return
             }
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
