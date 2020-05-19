@@ -175,7 +175,8 @@ class SwiftFlutterAwsAmplifyCognito {
             DispatchQueue.main.async {
                 result([
                     "accessKeyId": awsCredentials?.accessKey,
-                    "secretKey": awsCredentials?.secretKey
+                    "secretKey": awsCredentials?.secretKey,
+                    "sessionToken": awsCredentials?.sessionToken
                 ])
             }
         }
