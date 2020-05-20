@@ -172,17 +172,11 @@ class SwiftFlutterAwsAmplifyCognito {
                     result(FlutterError(code: "Error", message: "Error getting AWS credentails", details: error?.localizedDescription))
                 }
             }
-
-            var sessionToken = ""
-            if awsCredentials is AWSSessionCredentials {
-                sessionToken = awsCredentials?.sessionToken
-            }
-
             DispatchQueue.main.async {
                 result([
                     "accessKeyId": awsCredentials?.accessKey,
                     "secretKey": awsCredentials?.secretKey,
-                    "sessionToken": sessionToken
+                    "sessionToken": awsCredentials?.sessionKey
                 ])
             }
         }
