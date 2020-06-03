@@ -264,7 +264,7 @@ class SwiftFlutterAwsAmplifyCognito {
                     result([
                         "confirmationState": false,
                         "destination": userCodeDeliveryDetails?.destination,
-                        "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                        "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                         "attributeName": userCodeDeliveryDetails?.attributeName
                     ])
                 }
@@ -301,7 +301,7 @@ class SwiftFlutterAwsAmplifyCognito {
                     result([
                         "confirmationState": false,
                         "destination": userCodeDeliveryDetails?.destination,
-                        "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                        "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                         "attributeName": userCodeDeliveryDetails?.attributeName
                     ])
                 }
@@ -328,7 +328,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 result([
                     "confirmationState": signUpResult!.signUpConfirmationState == SignUpConfirmationState.confirmed,
                     "destination": userCodeDeliveryDetails?.destination,
-                    "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                    "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                     "attributeName": userCodeDeliveryDetails?.attributeName
                 ])
             }
@@ -380,7 +380,7 @@ class SwiftFlutterAwsAmplifyCognito {
                     "signInState": signInState,
                     "parameters": signinResult?.parameters,
                     "destination": userCodeDeliveryDetails?.destination,
-                    "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                    "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                     "attributeName": userCodeDeliveryDetails?.attributeName
                 ])
             }
@@ -432,7 +432,7 @@ class SwiftFlutterAwsAmplifyCognito {
                     "signInState": signInState,
                     "parameters": signinResult?.parameters,
                     "destination": userCodeDeliveryDetails?.destination,
-                    "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                    "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                     "attributeName": userCodeDeliveryDetails?.attributeName
                 ])
             }
@@ -470,7 +470,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 result([
                     "state": forgotPasswordState,
                     "destination": userCodeDeliveryDetails?.destination,
-                    "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                    "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                     "attributeName": userCodeDeliveryDetails?.attributeName
                 ])
             }
@@ -511,7 +511,7 @@ class SwiftFlutterAwsAmplifyCognito {
                 result([
                     "state": forgotPasswordState,
                     "destination": userCodeDeliveryDetails?.destination,
-                    "deliveryMedium": userCodeDeliveryDetails?.deliveryMedium,
+                    "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                     "attributeName": userCodeDeliveryDetails?.attributeName
                 ])
             }
