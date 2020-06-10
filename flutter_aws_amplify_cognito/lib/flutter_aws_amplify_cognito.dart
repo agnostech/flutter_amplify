@@ -174,6 +174,7 @@ class FlutterAwsAmplifyCognito {
       String username, String newPassword, String confirmationCode) async {
     try {
       Map<String, dynamic> arguments = Map<String, dynamic>();
+      arguments['username'] = username;
       arguments['newPassword'] = newPassword;
       arguments['confirmationCode'] = confirmationCode;
 
