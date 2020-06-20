@@ -159,14 +159,17 @@ class SwiftFlutterAwsAmplifyCognito {
                     DispatchQueue.main.async {
                         result(FlutterError(code: "Error", message: "Error getting idToken", details: (error! as! AWSMobileClientError).errorMessage))
                     }
+                    return
                 }else{
                     DispatchQueue.main.async {
                         result(FlutterError(code: "Error", message: "Error getting idToken", details: error?.localizedDescription))
                     }
+                    return
                 }
             }
 
             DispatchQueue.main.async {
+                NSLog("ID Tokens IOS \(String(describing: tokens?.idToken?.tokenString))")
                 result(tokens?.idToken?.tokenString)
             }
         }

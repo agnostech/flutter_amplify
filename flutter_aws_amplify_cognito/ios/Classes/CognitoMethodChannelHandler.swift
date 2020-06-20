@@ -9,8 +9,8 @@ import Foundation
 import Flutter
 
 func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) {
-    guard let arguments: [String: Any] = call.arguments as? [String : Any] else {
-        result("Could not unwrap Flutter arguments")
+    guard let arguments = call.arguments as? [String : Any?] else {
+        result(FlutterError(code: "NO_ARGUMENTS_PROVIDED", message: "No arguments were provided. If this call uses no arguments, provide an empty Map<String, Object>.", details: nil))
         return
     }
     switch call.method {
