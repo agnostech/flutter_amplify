@@ -9,7 +9,10 @@ import Foundation
 import Flutter
 
 func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let arguments = call.arguments as? [String: Any] ?? [:]
+    guard let arguments: [String: Any] = call.arguments as? [String : Any] else {
+        result("Could not unwrap Flutter arguments")
+        return
+    }
     switch call.method {
     case "isSignedIn":
         result(SwiftFlutterAwsAmplifyCognito.isSignedIn())
@@ -22,10 +25,10 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         
     case "signOut":
         SwiftFlutterAwsAmplifyCognito.signOut()
-    
+        
     case "signOutGlobally":
         SwiftFlutterAwsAmplifyCognito.signOutGlobally(result: result)
-    
+        
     case "getUserAttributes":
         SwiftFlutterAwsAmplifyCognito.getUserAttributes(result: result)
         
@@ -34,7 +37,7 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         
     case "getIdentityId":
         result(SwiftFlutterAwsAmplifyCognito.getIdentityId())
-
+        
     case "getTokens":
         SwiftFlutterAwsAmplifyCognito.getTokens(result: result)
         
@@ -46,10 +49,10 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         
     case "getRefreshToken":
         SwiftFlutterAwsAmplifyCognito.getRefreshToken(result: result)
-                
+        
     case "getCredentials":
         SwiftFlutterAwsAmplifyCognito.getCredentials(result: result)
-    
+        
     case "trackDevice":
         SwiftFlutterAwsAmplifyCognito.trackDevice(result: result)
         
@@ -64,7 +67,7 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         
     case "signUp":
         SwiftFlutterAwsAmplifyCognito.signUp(result: result, username: arguments["username"] as! String, password: arguments["password"] as! String, userAttributes: arguments["userAttributes"] as! [String : String])
-    
+        
     case "confirmSignUp":
         SwiftFlutterAwsAmplifyCognito.confirmSignUp(result: result, username: arguments["username"] as! String, code: arguments["code"] as! String)
         
@@ -73,15 +76,15 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         
     case "signIn":
         SwiftFlutterAwsAmplifyCognito.signIn(result: result, username: arguments["username"] as! String, password: arguments["password"] as! String)
-    
+        
     case "confirmSignIn":
         SwiftFlutterAwsAmplifyCognito.confirmSignIn(result: result, confirmSignInChallenge: arguments["confirmSignInChallenge"] as! String)
-    
+        
     case "forgotPassword":
         SwiftFlutterAwsAmplifyCognito.forgotPassword(result: result, username: arguments["username"] as! String)
-    
+        
     case "confirmForgotPassword":
-        SwiftFlutterAwsAmplifyCognito.confirmForgotPassword(result: result, username: arguments["username"] as! String, newPassword: arguments["password"] as! String, confirmationCode: arguments["confirmationCode"] as! String)
+        SwiftFlutterAwsAmplifyCognito.confirmForgotPassword(result: result, username: arguments["username"] as! String, newPassword: arguments["newPassword"] as! String, confirmationCode: arguments["confirmationCode"] as! String)
         
     default:
         result(FlutterMethodNotImplemented)
