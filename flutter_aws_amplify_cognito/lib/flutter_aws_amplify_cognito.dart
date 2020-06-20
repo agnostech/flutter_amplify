@@ -30,16 +30,20 @@ export 'package:flutter_aws_amplify_cognito/sign_in/identity_provider.dart';
 export 'package:flutter_aws_amplify_cognito/device/device.dart';
 
 class FlutterAwsAmplifyCognito {
-
   /// The main channel for communicating with native code for Android and iOS.
   static const MethodChannel _methodChannel =
       const MethodChannel('flutter_aws_amplify_cognito/cognito');
-
 
   /// A listener for keeping a track of user state change [UserStatus.SIGNED_OUT, UserStatus.SIGNED_IN, etc.].
   static const EventChannel _eventChannel =
       const EventChannel('flutter_aws_amplify_cognito/cognito_user_status');
 
+  static Future<T> _invokeMethod<T>(
+    String method, {
+    Map<String, Object> arguments = const {},
+  }) {
+    return _methodChannel.invokeMethod(method, arguments);
+  }
 
   /// Helps user sign up in the Cognito User Pool with the required user attributes[Map<String, String>]
   ///
@@ -53,13 +57,14 @@ class FlutterAwsAmplifyCognito {
       arguments['password'] = password;
       arguments['userAttributes'] = userAttributes;
 
-      final signUpResult =
-          await _methodChannel.invokeMethod("signUp", arguments);
+      final signUpResult = await _invokeMethod("signUp", arguments: arguments);
 
       return SignUpResult(
           signUpResult['confirmationState'],
-          UserCodeDeliveryDetails(signUpResult['destination'] ?? "" ,
-              signUpResult['deliveryMedium'] ?? "", signUpResult['attributeName'] ?? ""));
+          UserCodeDeliveryDetails(
+              signUpResult['destination'] ?? "",
+              signUpResult['deliveryMedium'] ?? "",
+              signUpResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -69,21 +74,26 @@ class FlutterAwsAmplifyCognito {
   static Future<SignUpResult> confirmSignUp(
       String username, String code) async {
     try {
-      Map<String, dynamic> arguments = Map<String, dynamic>();
-      arguments['username'] = username;
-      arguments['code'] = code;
+      final arguments = {
+        'username': username,
+        'code': code,
+      };
 
       final signUpResult =
-          await _methodChannel.invokeMethod("confirmSignUp", arguments);
+          await _invokeMethod("confirmSignUp", arguments: arguments);
+
       return SignUpResult(
-          signUpResult['confirmationState'],
-          UserCodeDeliveryDetails(signUpResult['destination'] ?? "",
-              signUpResult['deliveryMedium'] ?? "", signUpResult['attributeName'] ?? ""));
+        signUpResult['confirmationState'],
+        UserCodeDeliveryDetails(
+          signUpResult['destination'] ?? "",
+          signUpResult['deliveryMedium'] ?? "",
+          signUpResult['attributeName'] ?? "",
+        ),
+      );
     } on PlatformException catch (e) {
       return Future.error(e);
     }
   }
-
 
   /// Re-sends a confirmation code for confirming user sign up in case of no/delayed confirmation code
   /// delivery via SMS/email.
@@ -93,11 +103,13 @@ class FlutterAwsAmplifyCognito {
       arguments['username'] = username;
 
       final signUpResult =
-          await _methodChannel.invokeMethod("resendSignUp", arguments);
+          await _invokeMethod("resendSignUp", arguments: arguments);
       return SignUpResult(
           signUpResult['confirmationState'],
-          UserCodeDeliveryDetails(signUpResult['destination'] ?? "",
-              signUpResult['deliveryMedium'] ?? "", signUpResult['attributeName'] ?? ""));
+          UserCodeDeliveryDetails(
+              signUpResult['destination'] ?? "",
+              signUpResult['deliveryMedium'] ?? "",
+              signUpResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -113,14 +125,16 @@ class FlutterAwsAmplifyCognito {
       arguments['username'] = username;
       arguments['password'] = password;
 
-      final signInResult =
-          await _methodChannel.invokeMethod("signIn", arguments);
+      final signInResult = await _invokeMethod("signIn", arguments: arguments);
 
       return SignInResult(
           parseSignInState(signInResult['signInState']),
-          Map<String, String>.from(signInResult['parameters'] ?? Map<String, String>()),
-          UserCodeDeliveryDetails(signInResult['destination'] ?? "",
-              signInResult['deliveryMedium'] ?? "", signInResult['attributeName'] ?? ""));
+          Map<String, String>.from(
+              signInResult['parameters'] ?? Map<String, String>()),
+          UserCodeDeliveryDetails(
+              signInResult['destination'] ?? "",
+              signInResult['deliveryMedium'] ?? "",
+              signInResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -137,13 +151,16 @@ class FlutterAwsAmplifyCognito {
       arguments['confirmSignInChallenge'] = confirmSignInChallenge;
 
       final signInResult =
-          await _methodChannel.invokeMethod("confirmSignIn", arguments);
+          await _invokeMethod("confirmSignIn", arguments: arguments);
 
       return SignInResult(
           parseSignInState(signInResult['signInState']),
-          Map<String, String>.from(signInResult['parameters'] ?? Map<String, String>()),
-          UserCodeDeliveryDetails(signInResult['destination'] ?? "",
-              signInResult['deliveryMedium'] ?? "", signInResult['attributeName'] ?? ""));
+          Map<String, String>.from(
+              signInResult['parameters'] ?? Map<String, String>()),
+          UserCodeDeliveryDetails(
+              signInResult['destination'] ?? "",
+              signInResult['deliveryMedium'] ?? "",
+              signInResult['attributeName'] ?? ""));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -156,7 +173,7 @@ class FlutterAwsAmplifyCognito {
       arguments['username'] = username;
 
       final forgotPasswordResult =
-          await _methodChannel.invokeMethod("forgotPassword", arguments);
+          await _invokeMethod("forgotPassword", arguments: arguments);
 
       return ForgotPasswordResult(
           parseForgotPasswordState(forgotPasswordResult['state']),
@@ -172,9 +189,9 @@ class FlutterAwsAmplifyCognito {
   /// Sets a new password using the [confirmationCode] and [newPassword] typed by the user.
   static Future<ForgotPasswordResult> confirmForgotPassword(
       String username, String newPassword, String confirmationCode) async {
-        assert(username != null && username.length >1);
-        assert(newPassword != null && newPassword.length >1);
-        assert(confirmationCode != null && confirmationCode.length >1);
+    assert(username != null && username.length > 1);
+    assert(newPassword != null && newPassword.length > 1);
+    assert(confirmationCode != null && confirmationCode.length > 1);
     try {
       Map<String, String> arguments = {
         "newPassword": newPassword,
@@ -183,7 +200,7 @@ class FlutterAwsAmplifyCognito {
       };
 
       final forgotPasswordResult =
-          await _methodChannel.invokeMethod("confirmForgotPassword", arguments);
+          await _invokeMethod("confirmForgotPassword", arguments: arguments);
 
       return ForgotPasswordResult(
           parseForgotPasswordState(forgotPasswordResult['state']),
@@ -214,7 +231,7 @@ class FlutterAwsAmplifyCognito {
       arguments['cognitoIdentityId'] = cognitoIdentityId;
 
       final result =
-          await _methodChannel.invokeMethod('federatedSignIn', arguments);
+          await _invokeMethod('federatedSignIn', arguments: arguments);
 
       return FederatedSignInResult(parseUserStatus(result['userState']),
           Map<String, String>.from(result['userDetails']));
@@ -228,7 +245,7 @@ class FlutterAwsAmplifyCognito {
   /// Returns the current [UserStatus]
   static Future<UserStatus> initialize() async {
     try {
-      return parseUserStatus(await _methodChannel.invokeMethod("initialize"));
+      return parseUserStatus(await _invokeMethod("initialize"));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -237,7 +254,7 @@ class FlutterAwsAmplifyCognito {
   /// Checks and returns true if the user is signed in.
   static Future<bool> isSignedIn() async {
     try {
-      return await _methodChannel.invokeMethod("isSignedIn");
+      return await _invokeMethod("isSignedIn");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -246,8 +263,7 @@ class FlutterAwsAmplifyCognito {
   /// Checks the current user state and returns the [UserStatus].
   static Future<UserStatus> currentUserState() async {
     try {
-      return parseUserStatus(
-          await _methodChannel.invokeMethod("currentUserState"));
+      return parseUserStatus(await _invokeMethod("currentUserState"));
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -256,7 +272,7 @@ class FlutterAwsAmplifyCognito {
   /// Signs out the user from the current application.
   static Future<void> signOut() async {
     try {
-      await _methodChannel.invokeMethod("signOut");
+      await _invokeMethod("signOut");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -265,7 +281,7 @@ class FlutterAwsAmplifyCognito {
   /// Signs out the user globally from all the applications.
   static Future<bool> signOutGlobally() async {
     try {
-      return await _methodChannel.invokeMethod("signOutGlobally");
+      return await _invokeMethod("signOutGlobally");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -274,7 +290,7 @@ class FlutterAwsAmplifyCognito {
   /// Gets user attributes from the Cognito User Pool.
   static Future<Map<String, String>> getUserAttributes() async {
     try {
-      final attributes = await _methodChannel.invokeMethod("getUserAttributes");
+      final attributes = await _invokeMethod("getUserAttributes");
       return Map<String, String>.from(attributes);
     } on PlatformException catch (e) {
       return Future.error(e);
@@ -284,7 +300,7 @@ class FlutterAwsAmplifyCognito {
   /// Retrieves the [username] for the current signed in user.
   static Future<String> getUsername() async {
     try {
-      return await _methodChannel.invokeMethod("getUsername");
+      return await _invokeMethod("getUsername");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -293,7 +309,7 @@ class FlutterAwsAmplifyCognito {
   /// Retrieves the [identityId] for the current signed in user.
   static Future<String> getIdentityId() async {
     try {
-      return await _methodChannel.invokeMethod("getIdentityId");
+      return await _invokeMethod("getIdentityId");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -302,7 +318,7 @@ class FlutterAwsAmplifyCognito {
   /// Retrieves the [Tokens] for the currently signed in user.
   static Future<Tokens> getTokens() async {
     try {
-      final tokens = await _methodChannel.invokeMethod("getTokens");
+      final tokens = await _invokeMethod("getTokens");
       return Tokens(
           tokens['accessToken'], tokens['idToken'], tokens['refreshToken']);
     } on PlatformException catch (e) {
@@ -313,7 +329,7 @@ class FlutterAwsAmplifyCognito {
   /// Retrieves the [idToken] for the currently signed in user.
   static Future<String> getIdToken() async {
     try {
-      return await _methodChannel.invokeMethod("getIdToken");
+      return await _invokeMethod("getIdToken");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -322,7 +338,7 @@ class FlutterAwsAmplifyCognito {
   /// Retrieves the [accessToken] for the currently signed in user.
   static Future<String> getAccessToken() async {
     try {
-      return await _methodChannel.invokeMethod("getAccessToken");
+      return await _invokeMethod("getAccessToken");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -331,7 +347,7 @@ class FlutterAwsAmplifyCognito {
   /// Retrieves the [refreshToken] for the currently signed in user.
   static Future<String> getRefreshToken() async {
     try {
-      return await _methodChannel.invokeMethod("getRefreshToken");
+      return await _invokeMethod("getRefreshToken");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -343,7 +359,7 @@ class FlutterAwsAmplifyCognito {
   /// exchanged for necessary certificates/credentials to use the other AWS services.
   static Future<AWSCredentials> getCredentials() async {
     try {
-      final credentials = await _methodChannel.invokeMethod("getCredentials");
+      final credentials = await _invokeMethod("getCredentials");
       return AWSCredentials(
           credentials['accessKeyId'], credentials['secretKey']);
     } on PlatformException catch (e) {
@@ -354,7 +370,7 @@ class FlutterAwsAmplifyCognito {
   /// Sets the current user device has `remembered` in the Cognito User Pool.
   static Future<bool> trackDevice() async {
     try {
-      return await _methodChannel.invokeMethod("trackDevice");
+      return await _invokeMethod("trackDevice");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -363,7 +379,7 @@ class FlutterAwsAmplifyCognito {
   /// Sets the current user device has `not remembered` in the Cognito User Pool.
   static Future<bool> untrackDevice() async {
     try {
-      return await _methodChannel.invokeMethod("untrackDevice");
+      return await _invokeMethod("untrackDevice");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -372,7 +388,7 @@ class FlutterAwsAmplifyCognito {
   /// Removes the current device affiliated with the user in the Cognito User Pool.
   static Future<bool> forgetDevice() async {
     try {
-      return await _methodChannel.invokeMethod("forgetDevice");
+      return await _invokeMethod("forgetDevice");
     } on PlatformException catch (e) {
       return Future.error(e);
     }
@@ -381,7 +397,7 @@ class FlutterAwsAmplifyCognito {
   /// Gets the current device's details as a [Device] response object.
   static Future<Device> getDeviceDetails() async {
     try {
-      var deviceDetails = await _methodChannel.invokeMethod("getDeviceDetails");
+      var deviceDetails = await _invokeMethod("getDeviceDetails");
 
       return Device(
           DateTime.parse(deviceDetails['createDate']),
