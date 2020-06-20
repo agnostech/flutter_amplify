@@ -172,6 +172,9 @@ class FlutterAwsAmplifyCognito {
   /// Sets a new password using the [confirmationCode] and [newPassword] typed by the user.
   static Future<ForgotPasswordResult> confirmForgotPassword(
       String username, String newPassword, String confirmationCode) async {
+        assert(username != null && username.length >1);
+        assert(newPassword != null && newPassword.length >1);
+        assert(confirmationCode != null && confirmationCode.length >1);
     try {
       Map<String, String> arguments = {
         "newPassword": newPassword,
