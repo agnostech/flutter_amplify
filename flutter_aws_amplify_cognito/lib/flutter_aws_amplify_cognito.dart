@@ -173,9 +173,11 @@ class FlutterAwsAmplifyCognito {
   static Future<ForgotPasswordResult> confirmForgotPassword(
       String username, String newPassword, String confirmationCode) async {
     try {
-      Map<String, dynamic> arguments = Map<String, dynamic>();
-      arguments['newPassword'] = newPassword;
-      arguments['confirmationCode'] = confirmationCode;
+      Map<String, String> arguments = {
+        "newPassword": newPassword,
+        "username": username,
+        "confirmationCode": confirmationCode
+      };
 
       final forgotPasswordResult =
           await _methodChannel.invokeMethod("confirmForgotPassword", arguments);
