@@ -329,7 +329,7 @@ class SwiftFlutterAwsAmplifyCognito {
             let userCodeDeliveryDetails = signUpResult?.codeDeliveryDetails
             DispatchQueue.main.async {
                 result([
-                    "confirmationState": signUpResult!.signUpConfirmationState == SignUpConfirmationState.confirmed,
+                    "confirmationState": signUpResult?.signUpConfirmationState == SignUpConfirmationState.confirmed,
                     "destination": userCodeDeliveryDetails?.destination,
                     "deliveryMedium": String(describing: userCodeDeliveryDetails?.deliveryMedium),
                     "attributeName": userCodeDeliveryDetails?.attributeName
