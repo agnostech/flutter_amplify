@@ -174,6 +174,7 @@ class FlutterAwsAmplifyCognito {
       String username, String newPassword, String confirmationCode) async {
     try {
       Map<String, dynamic> arguments = Map<String, dynamic>();
+      arguments['username'] = username;
       arguments['newPassword'] = newPassword;
       arguments['confirmationCode'] = confirmationCode;
 
@@ -340,7 +341,7 @@ class FlutterAwsAmplifyCognito {
     try {
       final credentials = await _methodChannel.invokeMethod("getCredentials");
       return AWSCredentials(
-          credentials['accessKeyId'], credentials['secretKey']);
+          credentials['accessKeyId'], credentials['secretKey'], credentials["sessionToken"]);
     } on PlatformException catch (e) {
       return Future.error(e);
     }

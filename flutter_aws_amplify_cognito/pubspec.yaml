@@ -1,6 +1,6 @@
 name: flutter_aws_amplify_cognito
 description: Flutter plugin for AWS Amplify Cognito based Authentication.
-version: 1.0.0+6
+version: 1.0.0+7
 homepage: https://agnostech.github.io/flutteramplify
 
 environment:

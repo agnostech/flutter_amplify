@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.amazonaws.auth.AWSCredentials
+import com.amazonaws.auth.AWSSessionCredentials
 import com.amazonaws.mobile.client.*
 import com.amazonaws.mobile.client.results.*
 import io.flutter.plugin.common.MethodChannel
@@ -165,9 +166,14 @@ class FlutterAwsAmplifyCognito {
             AWSMobileClient.getInstance().getAWSCredentials(object: Callback<AWSCredentials> {
                 override fun onResult(credentials: AWSCredentials) {
                     Handler(Looper.getMainLooper()).post {
+                        var session: String = ""
+                        if (credentials is AWSSessionCredentials) {
+                            session = credentials.sessionToken
+                        }
                         result.success(hashMapOf(
                                 "secretKey" to credentials.awsSecretKey,
-                                "accessKeyId" to credentials.awsAccessKeyId
+                                "accessKeyId" to credentials.awsAccessKeyId,
+                                "sessionToken" to session
                         ))
                     }
                 }

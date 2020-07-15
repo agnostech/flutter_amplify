@@ -81,7 +81,7 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         SwiftFlutterAwsAmplifyCognito.forgotPassword(result: result, username: arguments["username"] as! String)
     
     case "confirmForgotPassword":
-        SwiftFlutterAwsAmplifyCognito.confirmForgotPassword(result: result, username: arguments["username"] as! String, newPassword: arguments["password"] as! String, confirmationCode: arguments["confirmationCode"] as! String)
+        SwiftFlutterAwsAmplifyCognito.confirmForgotPassword(result: result, username: arguments["username"] as! String, newPassword: arguments["newPassword"] as! String, confirmationCode: arguments["confirmationCode"] as! String)
         
     default:
         result(FlutterMethodNotImplemented)
