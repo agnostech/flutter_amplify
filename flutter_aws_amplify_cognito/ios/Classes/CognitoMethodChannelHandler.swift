@@ -21,7 +21,7 @@ func handleMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) 
         SwiftFlutterAwsAmplifyCognito.initialize(result: result)
         
     case "signOut":
-        SwiftFlutterAwsAmplifyCognito.signOut()
+        SwiftFlutterAwsAmplifyCognito.signOut(result: result)
     
     case "signOutGlobally":
         SwiftFlutterAwsAmplifyCognito.signOutGlobally(result: result)
