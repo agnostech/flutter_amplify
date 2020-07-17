@@ -72,8 +72,11 @@ class SwiftFlutterAwsAmplifyCognito {
         }
     }
     
-    static func signOut() {
+    static func signOut(result: @escaping FlutterResult) {
         AWSMobileClient.default().signOut()
+        DispatchQueue.main.async {
+            result(true)
+        }
     }
     
     static func signOutGlobally(result: @escaping FlutterResult) {
