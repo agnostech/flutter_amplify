@@ -46,7 +46,10 @@ class FlutterAwsAmplifyCognito {
                     }
                 })
 
-        fun signOut() = AWSMobileClient.getInstance().signOut()
+        fun signOut(result: MethodChannel.Result) {
+            AWSMobileClient.getInstance().signOut()
+            result.success(true)
+        }
         fun signOutGlobally(result: MethodChannel.Result) = AWSMobileClient.getInstance().signOut(
                 SignOutOptions.builder().signOutGlobally(true).build(),
                 object : Callback<Void> {
