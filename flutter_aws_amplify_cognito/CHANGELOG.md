@@ -1,3 +1,7 @@
+## 1.0.0+7
+
+* Updated Android and iOS dependencies
+
 ## 1.0.0+6
 
 * Fixed token calls on the main thread
