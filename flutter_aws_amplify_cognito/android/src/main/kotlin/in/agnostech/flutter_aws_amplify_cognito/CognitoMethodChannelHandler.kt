@@ -10,7 +10,7 @@ class CognitoMethodChannelHandler(private val context: Context) : MethodChannel.
             "isSignedIn" -> result.success(FlutterAwsAmplifyCognito.isSignedIn())
             "currentUserState" -> FlutterAwsAmplifyCognito.currentUserState(result)
             "initialize" -> FlutterAwsAmplifyCognito.initialize(context, result)
-            "signOut" -> FlutterAwsAmplifyCognito.signOut()
+            "signOut" -> FlutterAwsAmplifyCognito.signOut(result)
             "signOutGlobally" -> FlutterAwsAmplifyCognito.signOutGlobally(result)
             "getUserAttributes" -> FlutterAwsAmplifyCognito.getUserAttributes(result)
             "getUsername" -> FlutterAwsAmplifyCognito.getUsername(result)
