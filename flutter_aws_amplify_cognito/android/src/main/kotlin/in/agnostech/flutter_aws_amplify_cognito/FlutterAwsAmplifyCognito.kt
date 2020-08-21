@@ -54,7 +54,7 @@ class FlutterAwsAmplifyCognito {
                         }
                     }
 
-                    override fun onError(e: Exception?) {
+                    override fun onError(e: Exception) {
                         Handler(Looper.getMainLooper()).post {
                             result.error("Error", "Error signing in", e.localizedMessage)
                         }
