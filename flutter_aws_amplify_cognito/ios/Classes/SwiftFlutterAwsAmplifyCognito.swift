@@ -78,8 +78,17 @@ class SwiftFlutterAwsAmplifyCognito {
         }
     }
     
-    static func signOut() {
-        AWSMobileClient.default().signOut()
+    static func signOut(result: @escaping FlutterResult) {
+        AWSMobileClient.default().signOut() { (error) in
+            if (error != nil) {
+                DispatchQueue.main.async {
+                    result(FlutterError(code: "Error", message: "Error signing out", details: error?.localizedDescription))
+                }
+            }
+            DispatchQueue.main.async {
+                result(true)
+            }
+        }
     }
     
     static func signOutGlobally(result: @escaping FlutterResult) {
